@@ -631,75 +631,75 @@ inline auto yamlToEnum(YAML::Node n, https___w3id_org_cwl_cwl::LoadListingRequir
     to_enum(n.as<std::string>(), out);
 }
 namespace https___w3id_org_cwl_cwl {
-enum class stdin : unsigned int {
-    stdin
+enum class stdin_ : unsigned int {
+    stdin_
 };
-inline auto to_string(stdin v) {
+inline auto to_string(stdin_ v) {
     static auto m = std::vector<std::string_view> {
         "stdin"
     };
-    using U = std::underlying_type_t<https___w3id_org_cwl_cwl::stdin>;
+    using U = std::underlying_type_t<https___w3id_org_cwl_cwl::stdin_>;
     return m.at(static_cast<U>(v));
 }
 }
-inline void to_enum(std::string_view v, https___w3id_org_cwl_cwl::stdin& out) {
-    static auto m = std::map<std::string, https___w3id_org_cwl_cwl::stdin, std::less<>> {
-        {"stdin", https___w3id_org_cwl_cwl::stdin::stdin},
+inline void to_enum(std::string_view v, https___w3id_org_cwl_cwl::stdin_& out) {
+    static auto m = std::map<std::string, https___w3id_org_cwl_cwl::stdin_, std::less<>> {
+        {"stdin", https___w3id_org_cwl_cwl::stdin_::stdin_},
     };
     out = m.find(v)->second;
 }
-inline auto toYaml(https___w3id_org_cwl_cwl::stdin v) {
+inline auto toYaml(https___w3id_org_cwl_cwl::stdin_ v) {
     return YAML::Node{std::string{to_string(v)}};
 }
-inline auto yamlToEnum(YAML::Node n, https___w3id_org_cwl_cwl::stdin& out) {
+inline auto yamlToEnum(YAML::Node n, https___w3id_org_cwl_cwl::stdin_& out) {
     to_enum(n.as<std::string>(), out);
 }
 namespace https___w3id_org_cwl_cwl {
-enum class stdout : unsigned int {
-    stdout
+enum class stdout_ : unsigned int {
+    stdout_
 };
-inline auto to_string(stdout v) {
+inline auto to_string(stdout_ v) {
     static auto m = std::vector<std::string_view> {
         "stdout"
     };
-    using U = std::underlying_type_t<https___w3id_org_cwl_cwl::stdout>;
+    using U = std::underlying_type_t<https___w3id_org_cwl_cwl::stdout_>;
     return m.at(static_cast<U>(v));
 }
 }
-inline void to_enum(std::string_view v, https___w3id_org_cwl_cwl::stdout& out) {
-    static auto m = std::map<std::string, https___w3id_org_cwl_cwl::stdout, std::less<>> {
-        {"stdout", https___w3id_org_cwl_cwl::stdout::stdout},
+inline void to_enum(std::string_view v, https___w3id_org_cwl_cwl::stdout_& out) {
+    static auto m = std::map<std::string, https___w3id_org_cwl_cwl::stdout_, std::less<>> {
+        {"stdout", https___w3id_org_cwl_cwl::stdout_::stdout_},
     };
     out = m.find(v)->second;
 }
-inline auto toYaml(https___w3id_org_cwl_cwl::stdout v) {
+inline auto toYaml(https___w3id_org_cwl_cwl::stdout_ v) {
     return YAML::Node{std::string{to_string(v)}};
 }
-inline auto yamlToEnum(YAML::Node n, https___w3id_org_cwl_cwl::stdout& out) {
+inline auto yamlToEnum(YAML::Node n, https___w3id_org_cwl_cwl::stdout_& out) {
     to_enum(n.as<std::string>(), out);
 }
 namespace https___w3id_org_cwl_cwl {
-enum class stderr : unsigned int {
-    stderr
+enum class stderr_ : unsigned int {
+    stderr_
 };
-inline auto to_string(stderr v) {
+inline auto to_string(stderr_ v) {
     static auto m = std::vector<std::string_view> {
         "stderr"
     };
-    using U = std::underlying_type_t<https___w3id_org_cwl_cwl::stderr>;
+    using U = std::underlying_type_t<https___w3id_org_cwl_cwl::stderr_>;
     return m.at(static_cast<U>(v));
 }
 }
-inline void to_enum(std::string_view v, https___w3id_org_cwl_cwl::stderr& out) {
-    static auto m = std::map<std::string, https___w3id_org_cwl_cwl::stderr, std::less<>> {
-        {"stderr", https___w3id_org_cwl_cwl::stderr::stderr},
+inline void to_enum(std::string_view v, https___w3id_org_cwl_cwl::stderr_& out) {
+    static auto m = std::map<std::string, https___w3id_org_cwl_cwl::stderr_, std::less<>> {
+        {"stderr", https___w3id_org_cwl_cwl::stderr_::stderr_},
     };
     out = m.find(v)->second;
 }
-inline auto toYaml(https___w3id_org_cwl_cwl::stderr v) {
+inline auto toYaml(https___w3id_org_cwl_cwl::stderr_ v) {
     return YAML::Node{std::string{to_string(v)}};
 }
-inline auto yamlToEnum(YAML::Node n, https___w3id_org_cwl_cwl::stderr& out) {
+inline auto yamlToEnum(YAML::Node n, https___w3id_org_cwl_cwl::stderr_& out) {
     to_enum(n.as<std::string>(), out);
 }
 namespace https___w3id_org_cwl_cwl {
@@ -1781,7 +1781,7 @@ struct CommandInputParameter
     heap_object<std::variant<std::monostate, bool>> loadContents;
     heap_object<std::variant<std::monostate, LoadListingEnum>> loadListing;
     heap_object<std::variant<std::monostate, File, Directory, std::any>> default_;
-    heap_object<std::variant<CWLType, stdin, CommandInputRecordSchema, CommandInputEnumSchema, CommandInputArraySchema, std::string, std::vector<std::variant<CWLType, CommandInputRecordSchema, CommandInputEnumSchema, CommandInputArraySchema, std::string>>>> type;
+    heap_object<std::variant<CWLType, stdin_, CommandInputRecordSchema, CommandInputEnumSchema, CommandInputArraySchema, std::string, std::vector<std::variant<CWLType, CommandInputRecordSchema, CommandInputEnumSchema, CommandInputArraySchema, std::string>>>> type;
     heap_object<std::variant<std::monostate, CommandLineBinding>> inputBinding;
     auto toYaml() const -> YAML::Node override;
 };
@@ -1796,7 +1796,7 @@ struct CommandOutputParameter
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, std::string>> id;
     heap_object<std::variant<std::monostate, std::string, Expression>> format;
-    heap_object<std::variant<CWLType, stdout, stderr, CommandOutputRecordSchema, CommandOutputEnumSchema, CommandOutputArraySchema, std::string, std::vector<std::variant<CWLType, CommandOutputRecordSchema, CommandOutputEnumSchema, CommandOutputArraySchema, std::string>>>> type;
+    heap_object<std::variant<CWLType, stdout_, stderr_, CommandOutputRecordSchema, CommandOutputEnumSchema, CommandOutputArraySchema, std::string, std::vector<std::variant<CWLType, CommandOutputRecordSchema, CommandOutputEnumSchema, CommandOutputArraySchema, std::string>>>> type;
     heap_object<std::variant<std::monostate, CommandOutputBinding>> outputBinding;
     auto toYaml() const -> YAML::Node override;
 };
@@ -1817,9 +1817,9 @@ struct CommandLineTool
     heap_object<CommandLineTool_class_CommandLineTool_class> class_;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> baseCommand;
     heap_object<std::variant<std::monostate, std::vector<std::variant<std::string, Expression, CommandLineBinding>>>> arguments;
-    heap_object<std::variant<std::monostate, std::string, Expression>> stdin;
-    heap_object<std::variant<std::monostate, std::string, Expression>> stderr;
-    heap_object<std::variant<std::monostate, std::string, Expression>> stdout;
+    heap_object<std::variant<std::monostate, std::string, Expression>> stdin_;
+    heap_object<std::variant<std::monostate, std::string, Expression>> stderr_;
+    heap_object<std::variant<std::monostate, std::string, Expression>> stdout_;
     heap_object<std::variant<std::monostate, std::vector<int32_t>>> successCodes;
     heap_object<std::variant<std::monostate, std::vector<int32_t>>> temporaryFailCodes;
     heap_object<std::variant<std::monostate, std::vector<int32_t>>> permanentFailCodes;
@@ -2716,9 +2716,9 @@ inline auto https___w3id_org_cwl_cwl::CommandLineTool::toYaml() const -> YAML::N
     addYamlField(n, "class", toYaml(*class_));
     addYamlField(n, "baseCommand", toYaml(*baseCommand));
     addYamlField(n, "arguments", toYaml(*arguments));
-    addYamlField(n, "stdin", toYaml(*stdin));
-    addYamlField(n, "stderr", toYaml(*stderr));
-    addYamlField(n, "stdout", toYaml(*stdout));
+    addYamlField(n, "stdin", toYaml(*stdin_));
+    addYamlField(n, "stderr", toYaml(*stderr_));
+    addYamlField(n, "stdout", toYaml(*stdout_));
     addYamlField(n, "successCodes", toYaml(*successCodes));
     addYamlField(n, "temporaryFailCodes", toYaml(*temporaryFailCodes));
     addYamlField(n, "permanentFailCodes", toYaml(*permanentFailCodes));
