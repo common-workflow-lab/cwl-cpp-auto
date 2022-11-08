@@ -9,6 +9,7 @@ int main() {
    *tool.id         = "Some id";
    *tool.label      = "some label";
    *tool.doc        = "documentation that is brief";
+   *tool.stdout_    = "log.txt";
 
    {
        auto input = CommandInputParameter{};

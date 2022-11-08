@@ -26,15 +26,20 @@ cwl_v1_2.h: FORCE
 		https://github.com/common-workflow-language/cwl-v1.2/raw/1.2.1_proposed/CommonWorkflowLanguage.yml \
 		> $@
 
+## clean        : clean up the build
+clean: FORCE
+	rm -f cwl_output_example
+
 ## regen_parser : regenerate the CWL v1.2 parser
 regen_parser: cwl_v1_*.h
 
 ## tests        : compile and run the tests
 tests: FORCE cwl_output_example
-	result="$(shell ./cwl_output_example | md5sum)" ; \
-	if [ "$$result" = "0a39ff6b5101b929e2efeeeed471ffbe  -" ] ; \
+	@result="$(shell ./cwl_output_example | md5sum)" ; \
+	expected="8b8265e337caedcf6c59b205c5546b31  -" ;\
+	if [ "$$result" = "$$expected" ] ; \
 		then echo test passed ; \
-	else echo test failed ; exit 1; \
+	else echo test failed $$result != $$expected; exit 1; \
 	fi
 FORCE:
 

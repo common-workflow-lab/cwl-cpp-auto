@@ -1,0 +1,25 @@
+name: Continuous integration tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  tox:
+    name: CI tests
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: sudo apt-get install libyaml-cpp-dev
+      - name: Test with tox
+        run: make tests CXXFLAGS=-std=c++17
