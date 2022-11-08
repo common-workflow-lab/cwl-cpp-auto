@@ -26,6 +26,10 @@ cwl_v1_2.h: FORCE
 		https://github.com/common-workflow-language/cwl-v1.2/raw/1.2.1_proposed/CommonWorkflowLanguage.yml \
 		> $@
 
+## clean        : clean up the build
+clean: FORCE
+	rm -f cwl_output_example
+
 ## regen_parser : regenerate the CWL v1.2 parser
 regen_parser: cwl_v1_*.h
 
