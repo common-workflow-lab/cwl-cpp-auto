@@ -35,10 +35,11 @@ regen_parser: cwl_v1_*.h
 
 ## tests        : compile and run the tests
 tests: FORCE cwl_output_example
-	result="$(shell ./cwl_output_example | md5sum)" ; \
-	if [ "$$result" = "0a39ff6b5101b929e2efeeeed471ffbe  -" ] ; \
+	@result="$(shell ./cwl_output_example | md5sum)" ; \
+	expected="8b8265e337caedcf6c59b205c5546b31  -" ;\
+	if [ "$$result" = "$$expected" ] ; \
 		then echo test passed ; \
-	else echo test failed ; exit 1; \
+	else echo test failed $$result != $$expected; exit 1; \
 	fi
 FORCE:
 
