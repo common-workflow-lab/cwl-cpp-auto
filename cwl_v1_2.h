@@ -47,10 +47,21 @@ inline auto toYaml(std::string const& v) {
     return YAML::Node{v};
 }
 
-inline void addYamlField(YAML::Node node, std::string const& key, YAML::Node value) {
+inline void addYamlField(YAML::Node& node, std::string const& key, YAML::Node value) {
     if (value.IsDefined()) {
         node[key] = value;
     }
+}
+
+inline auto convertListToMap(YAML::Node list, std::string const& key_name) {
+    if (list.size() == 0) return list;
+    auto map = YAML::Node{};
+    for (YAML::Node n : list) {
+        auto key = n[key_name].as<std::string>();
+        n.remove(key_name);
+        map[key] = n;
+    }
+    return map;
 }
 
 // fwd declaring toYaml
@@ -261,70 +272,76 @@ inline auto toYaml(https___w3id_org_cwl_salad::Any v) {
 inline auto yamlToEnum(YAML::Node n, https___w3id_org_cwl_salad::Any& out) {
     to_enum(n.as<std::string>(), out);
 }
-enum class anon_enum_d9cba076fca539106791a4f46d198c7fcfbdb779 : unsigned int {
+namespace https___w3id_org_cwl_salad {
+enum class RecordSchema_type_Record_name : unsigned int {
     record
 };
-inline auto to_string(anon_enum_d9cba076fca539106791a4f46d198c7fcfbdb779 v) {
+inline auto to_string(RecordSchema_type_Record_name v) {
     static auto m = std::vector<std::string_view> {
         "record"
     };
-    using U = std::underlying_type_t<anon_enum_d9cba076fca539106791a4f46d198c7fcfbdb779>;
+    using U = std::underlying_type_t<https___w3id_org_cwl_salad::RecordSchema_type_Record_name>;
     return m.at(static_cast<U>(v));
 }
-inline void to_enum(std::string_view v, anon_enum_d9cba076fca539106791a4f46d198c7fcfbdb779& out) {
-    static auto m = std::map<std::string, anon_enum_d9cba076fca539106791a4f46d198c7fcfbdb779, std::less<>> {
-        {"record", anon_enum_d9cba076fca539106791a4f46d198c7fcfbdb779::record},
+}
+inline void to_enum(std::string_view v, https___w3id_org_cwl_salad::RecordSchema_type_Record_name& out) {
+    static auto m = std::map<std::string, https___w3id_org_cwl_salad::RecordSchema_type_Record_name, std::less<>> {
+        {"record", https___w3id_org_cwl_salad::RecordSchema_type_Record_name::record},
     };
     out = m.find(v)->second;
 }
-inline auto toYaml(anon_enum_d9cba076fca539106791a4f46d198c7fcfbdb779 v) {
+inline auto toYaml(https___w3id_org_cwl_salad::RecordSchema_type_Record_name v) {
     return YAML::Node{std::string{to_string(v)}};
 }
-inline auto yamlToEnum(YAML::Node n, anon_enum_d9cba076fca539106791a4f46d198c7fcfbdb779& out) {
+inline auto yamlToEnum(YAML::Node n, https___w3id_org_cwl_salad::RecordSchema_type_Record_name& out) {
     to_enum(n.as<std::string>(), out);
 }
-enum class anon_enum_d961d79c225752b9fadb617367615ab176b47d77 : unsigned int {
+namespace https___w3id_org_cwl_salad {
+enum class EnumSchema_type_Enum_name : unsigned int {
     enum_
 };
-inline auto to_string(anon_enum_d961d79c225752b9fadb617367615ab176b47d77 v) {
+inline auto to_string(EnumSchema_type_Enum_name v) {
     static auto m = std::vector<std::string_view> {
         "enum"
     };
-    using U = std::underlying_type_t<anon_enum_d961d79c225752b9fadb617367615ab176b47d77>;
+    using U = std::underlying_type_t<https___w3id_org_cwl_salad::EnumSchema_type_Enum_name>;
     return m.at(static_cast<U>(v));
 }
-inline void to_enum(std::string_view v, anon_enum_d961d79c225752b9fadb617367615ab176b47d77& out) {
-    static auto m = std::map<std::string, anon_enum_d961d79c225752b9fadb617367615ab176b47d77, std::less<>> {
-        {"enum", anon_enum_d961d79c225752b9fadb617367615ab176b47d77::enum_},
+}
+inline void to_enum(std::string_view v, https___w3id_org_cwl_salad::EnumSchema_type_Enum_name& out) {
+    static auto m = std::map<std::string, https___w3id_org_cwl_salad::EnumSchema_type_Enum_name, std::less<>> {
+        {"enum", https___w3id_org_cwl_salad::EnumSchema_type_Enum_name::enum_},
     };
     out = m.find(v)->second;
 }
-inline auto toYaml(anon_enum_d961d79c225752b9fadb617367615ab176b47d77 v) {
+inline auto toYaml(https___w3id_org_cwl_salad::EnumSchema_type_Enum_name v) {
     return YAML::Node{std::string{to_string(v)}};
 }
-inline auto yamlToEnum(YAML::Node n, anon_enum_d961d79c225752b9fadb617367615ab176b47d77& out) {
+inline auto yamlToEnum(YAML::Node n, https___w3id_org_cwl_salad::EnumSchema_type_Enum_name& out) {
     to_enum(n.as<std::string>(), out);
 }
-enum class anon_enum_d062602be0b4b8fd33e69e29a841317b6ab665bc : unsigned int {
+namespace https___w3id_org_cwl_salad {
+enum class ArraySchema_type_Array_name : unsigned int {
     array
 };
-inline auto to_string(anon_enum_d062602be0b4b8fd33e69e29a841317b6ab665bc v) {
+inline auto to_string(ArraySchema_type_Array_name v) {
     static auto m = std::vector<std::string_view> {
         "array"
     };
-    using U = std::underlying_type_t<anon_enum_d062602be0b4b8fd33e69e29a841317b6ab665bc>;
+    using U = std::underlying_type_t<https___w3id_org_cwl_salad::ArraySchema_type_Array_name>;
     return m.at(static_cast<U>(v));
 }
-inline void to_enum(std::string_view v, anon_enum_d062602be0b4b8fd33e69e29a841317b6ab665bc& out) {
-    static auto m = std::map<std::string, anon_enum_d062602be0b4b8fd33e69e29a841317b6ab665bc, std::less<>> {
-        {"array", anon_enum_d062602be0b4b8fd33e69e29a841317b6ab665bc::array},
+}
+inline void to_enum(std::string_view v, https___w3id_org_cwl_salad::ArraySchema_type_Array_name& out) {
+    static auto m = std::map<std::string, https___w3id_org_cwl_salad::ArraySchema_type_Array_name, std::less<>> {
+        {"array", https___w3id_org_cwl_salad::ArraySchema_type_Array_name::array},
     };
     out = m.find(v)->second;
 }
-inline auto toYaml(anon_enum_d062602be0b4b8fd33e69e29a841317b6ab665bc v) {
+inline auto toYaml(https___w3id_org_cwl_salad::ArraySchema_type_Array_name v) {
     return YAML::Node{std::string{to_string(v)}};
 }
-inline auto yamlToEnum(YAML::Node n, anon_enum_d062602be0b4b8fd33e69e29a841317b6ab665bc& out) {
+inline auto yamlToEnum(YAML::Node n, https___w3id_org_cwl_salad::ArraySchema_type_Array_name& out) {
     to_enum(n.as<std::string>(), out);
 }
 namespace https___w3id_org_cwl_cwl {
@@ -1232,7 +1249,6 @@ struct Documented {
 namespace https___w3id_org_cwl_salad {
 struct RecordField
     : https___w3id_org_cwl_salad::Documented {
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::string> name;
     heap_object<std::variant<std::variant<bool, int32_t, int64_t, float, double, std::string>, RecordSchema, EnumSchema, ArraySchema, std::string, std::vector<std::variant<std::variant<bool, int32_t, int64_t, float, double, std::string>, RecordSchema, EnumSchema, ArraySchema, std::string>>>> type;
     auto toYaml() const -> YAML::Node override;
@@ -1242,15 +1258,16 @@ struct RecordField
 namespace https___w3id_org_cwl_salad {
 struct RecordSchema {
     heap_object<std::variant<std::monostate, std::vector<RecordField>>> fields;
-    heap_object<anon_enum_d9cba076fca539106791a4f46d198c7fcfbdb779> type;
+    heap_object<RecordSchema_type_Record_name> type;
     virtual auto toYaml() const -> YAML::Node;
 };
 }
 
 namespace https___w3id_org_cwl_salad {
 struct EnumSchema {
+    heap_object<std::variant<std::monostate, std::string>> name;
     heap_object<std::vector<std::string>> symbols;
-    heap_object<anon_enum_d961d79c225752b9fadb617367615ab176b47d77> type;
+    heap_object<EnumSchema_type_Enum_name> type;
     virtual auto toYaml() const -> YAML::Node;
 };
 }
@@ -1258,7 +1275,7 @@ struct EnumSchema {
 namespace https___w3id_org_cwl_salad {
 struct ArraySchema {
     heap_object<std::variant<std::variant<bool, int32_t, int64_t, float, double, std::string>, RecordSchema, EnumSchema, ArraySchema, std::string, std::vector<std::variant<std::variant<bool, int32_t, int64_t, float, double, std::string>, RecordSchema, EnumSchema, ArraySchema, std::string>>>> items;
-    heap_object<anon_enum_d062602be0b4b8fd33e69e29a841317b6ab665bc> type;
+    heap_object<ArraySchema_type_Array_name> type;
     virtual auto toYaml() const -> YAML::Node;
 };
 }
@@ -1320,7 +1337,6 @@ struct LoadContents {
 namespace https___w3id_org_cwl_cwl {
 struct FieldBase
     : https___w3id_org_cwl_cwl::Labeled {
-    heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, SecondaryFileSchema, std::vector<SecondaryFileSchema>>> secondaryFiles;
     heap_object<std::variant<std::monostate, bool>> streamable;
     virtual ~FieldBase() = 0;
@@ -1349,11 +1365,6 @@ struct Parameter
     : https___w3id_org_cwl_cwl::FieldBase
     , https___w3id_org_cwl_salad::Documented
     , https___w3id_org_cwl_cwl::Identified {
-    heap_object<std::variant<std::monostate, std::string>> label;
-    heap_object<std::variant<std::monostate, SecondaryFileSchema, std::vector<SecondaryFileSchema>>> secondaryFiles;
-    heap_object<std::variant<std::monostate, bool>> streamable;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
-    heap_object<std::variant<std::monostate, std::string>> id;
     virtual ~Parameter() = 0;
     auto toYaml() const -> YAML::Node override;
 };
@@ -1370,8 +1381,6 @@ namespace https___w3id_org_cwl_cwl {
 struct IOSchema
     : https___w3id_org_cwl_cwl::Labeled
     , https___w3id_org_cwl_salad::Documented {
-    heap_object<std::variant<std::monostate, std::string>> label;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, std::string>> name;
     virtual ~IOSchema() = 0;
     auto toYaml() const -> YAML::Node override;
@@ -1381,9 +1390,6 @@ struct IOSchema
 namespace https___w3id_org_cwl_cwl {
 struct InputSchema
     : https___w3id_org_cwl_cwl::IOSchema {
-    heap_object<std::variant<std::monostate, std::string>> label;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
-    heap_object<std::variant<std::monostate, std::string>> name;
     virtual ~InputSchema() = 0;
     auto toYaml() const -> YAML::Node override;
 };
@@ -1392,20 +1398,13 @@ struct InputSchema
 namespace https___w3id_org_cwl_cwl {
 struct OutputSchema
     : https___w3id_org_cwl_cwl::IOSchema {
-    heap_object<std::variant<std::monostate, std::string>> label;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
-    heap_object<std::variant<std::monostate, std::string>> name;
     virtual ~OutputSchema() = 0;
     auto toYaml() const -> YAML::Node override;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
-struct InputRecordField
-    : https___w3id_org_cwl_salad::RecordField
-    , https___w3id_org_cwl_cwl::FieldBase
-    , https___w3id_org_cwl_cwl::InputFormat
-    , https___w3id_org_cwl_cwl::LoadContents {
+struct InputRecordField {
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::string> name;
     heap_object<std::variant<CWLType, InputRecordSchema, InputEnumSchema, InputArraySchema, std::string, std::vector<std::variant<CWLType, InputRecordSchema, InputEnumSchema, InputArraySchema, std::string>>>> type;
@@ -1415,20 +1414,18 @@ struct InputRecordField
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>, Expression>> format;
     heap_object<std::variant<std::monostate, bool>> loadContents;
     heap_object<std::variant<std::monostate, LoadListingEnum>> loadListing;
-    auto toYaml() const -> YAML::Node override;
+    virtual auto toYaml() const -> YAML::Node;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
-struct InputRecordSchema
-    : https___w3id_org_cwl_salad::RecordSchema
-    , https___w3id_org_cwl_cwl::InputSchema {
+struct InputRecordSchema {
     heap_object<std::variant<std::monostate, std::vector<InputRecordField>>> fields;
-    heap_object<anon_enum_d9cba076fca539106791a4f46d198c7fcfbdb779> type;
+    heap_object<https___w3id_org_cwl_salad::RecordSchema_type_Record_name> type;
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, std::string>> name;
-    auto toYaml() const -> YAML::Node override;
+    virtual auto toYaml() const -> YAML::Node;
 };
 }
 
@@ -1436,33 +1433,23 @@ namespace https___w3id_org_cwl_cwl {
 struct InputEnumSchema
     : https___w3id_org_cwl_salad::EnumSchema
     , https___w3id_org_cwl_cwl::InputSchema {
-    heap_object<std::vector<std::string>> symbols;
-    heap_object<anon_enum_d961d79c225752b9fadb617367615ab176b47d77> type;
-    heap_object<std::variant<std::monostate, std::string>> label;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
-    heap_object<std::variant<std::monostate, std::string>> name;
     auto toYaml() const -> YAML::Node override;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
-struct InputArraySchema
-    : https___w3id_org_cwl_salad::ArraySchema
-    , https___w3id_org_cwl_cwl::InputSchema {
+struct InputArraySchema {
     heap_object<std::variant<CWLType, InputRecordSchema, InputEnumSchema, InputArraySchema, std::string, std::vector<std::variant<CWLType, InputRecordSchema, InputEnumSchema, InputArraySchema, std::string>>>> items;
-    heap_object<anon_enum_d062602be0b4b8fd33e69e29a841317b6ab665bc> type;
+    heap_object<https___w3id_org_cwl_salad::ArraySchema_type_Array_name> type;
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, std::string>> name;
-    auto toYaml() const -> YAML::Node override;
+    virtual auto toYaml() const -> YAML::Node;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
-struct OutputRecordField
-    : https___w3id_org_cwl_salad::RecordField
-    , https___w3id_org_cwl_cwl::FieldBase
-    , https___w3id_org_cwl_cwl::OutputFormat {
+struct OutputRecordField {
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::string> name;
     heap_object<std::variant<CWLType, OutputRecordSchema, OutputEnumSchema, OutputArraySchema, std::string, std::vector<std::variant<CWLType, OutputRecordSchema, OutputEnumSchema, OutputArraySchema, std::string>>>> type;
@@ -1470,20 +1457,18 @@ struct OutputRecordField
     heap_object<std::variant<std::monostate, SecondaryFileSchema, std::vector<SecondaryFileSchema>>> secondaryFiles;
     heap_object<std::variant<std::monostate, bool>> streamable;
     heap_object<std::variant<std::monostate, std::string, Expression>> format;
-    auto toYaml() const -> YAML::Node override;
+    virtual auto toYaml() const -> YAML::Node;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
-struct OutputRecordSchema
-    : https___w3id_org_cwl_salad::RecordSchema
-    , https___w3id_org_cwl_cwl::OutputSchema {
+struct OutputRecordSchema {
     heap_object<std::variant<std::monostate, std::vector<OutputRecordField>>> fields;
-    heap_object<anon_enum_d9cba076fca539106791a4f46d198c7fcfbdb779> type;
+    heap_object<https___w3id_org_cwl_salad::RecordSchema_type_Record_name> type;
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, std::string>> name;
-    auto toYaml() const -> YAML::Node override;
+    virtual auto toYaml() const -> YAML::Node;
 };
 }
 
@@ -1491,25 +1476,18 @@ namespace https___w3id_org_cwl_cwl {
 struct OutputEnumSchema
     : https___w3id_org_cwl_salad::EnumSchema
     , https___w3id_org_cwl_cwl::OutputSchema {
-    heap_object<std::vector<std::string>> symbols;
-    heap_object<anon_enum_d961d79c225752b9fadb617367615ab176b47d77> type;
-    heap_object<std::variant<std::monostate, std::string>> label;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
-    heap_object<std::variant<std::monostate, std::string>> name;
     auto toYaml() const -> YAML::Node override;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
-struct OutputArraySchema
-    : https___w3id_org_cwl_salad::ArraySchema
-    , https___w3id_org_cwl_cwl::OutputSchema {
+struct OutputArraySchema {
     heap_object<std::variant<CWLType, OutputRecordSchema, OutputEnumSchema, OutputArraySchema, std::string, std::vector<std::variant<CWLType, OutputRecordSchema, OutputEnumSchema, OutputArraySchema, std::string>>>> items;
-    heap_object<anon_enum_d062602be0b4b8fd33e69e29a841317b6ab665bc> type;
+    heap_object<https___w3id_org_cwl_salad::ArraySchema_type_Array_name> type;
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, std::string>> name;
-    auto toYaml() const -> YAML::Node override;
+    virtual auto toYaml() const -> YAML::Node;
 };
 }
 
@@ -1518,14 +1496,6 @@ struct InputParameter
     : https___w3id_org_cwl_cwl::Parameter
     , https___w3id_org_cwl_cwl::InputFormat
     , https___w3id_org_cwl_cwl::LoadContents {
-    heap_object<std::variant<std::monostate, std::string>> label;
-    heap_object<std::variant<std::monostate, SecondaryFileSchema, std::vector<SecondaryFileSchema>>> secondaryFiles;
-    heap_object<std::variant<std::monostate, bool>> streamable;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
-    heap_object<std::variant<std::monostate, std::string>> id;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>, Expression>> format;
-    heap_object<std::variant<std::monostate, bool>> loadContents;
-    heap_object<std::variant<std::monostate, LoadListingEnum>> loadListing;
     heap_object<std::variant<std::monostate, File, Directory, std::any>> default_;
     virtual ~InputParameter() = 0;
     auto toYaml() const -> YAML::Node override;
@@ -1536,12 +1506,6 @@ namespace https___w3id_org_cwl_cwl {
 struct OutputParameter
     : https___w3id_org_cwl_cwl::Parameter
     , https___w3id_org_cwl_cwl::OutputFormat {
-    heap_object<std::variant<std::monostate, std::string>> label;
-    heap_object<std::variant<std::monostate, SecondaryFileSchema, std::vector<SecondaryFileSchema>>> secondaryFiles;
-    heap_object<std::variant<std::monostate, bool>> streamable;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
-    heap_object<std::variant<std::monostate, std::string>> id;
-    heap_object<std::variant<std::monostate, std::string, Expression>> format;
     virtual ~OutputParameter() = 0;
     auto toYaml() const -> YAML::Node override;
 };
@@ -1559,9 +1523,6 @@ struct Process
     : https___w3id_org_cwl_cwl::Identified
     , https___w3id_org_cwl_cwl::Labeled
     , https___w3id_org_cwl_salad::Documented {
-    heap_object<std::variant<std::monostate, std::string>> id;
-    heap_object<std::variant<std::monostate, std::string>> label;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::vector<std::variant<CommandInputParameter, WorkflowInputParameter, OperationInputParameter>>> inputs;
     heap_object<std::vector<std::variant<CommandOutputParameter, ExpressionToolOutputParameter, WorkflowOutputParameter, OperationOutputParameter>>> outputs;
     heap_object<std::variant<std::monostate, std::vector<std::variant<InlineJavascriptRequirement, SchemaDefRequirement, LoadListingRequirement, DockerRequirement, SoftwareRequirement, InitialWorkDirRequirement, EnvVarRequirement, ShellCommandRequirement, ResourceRequirement, WorkReuse, NetworkAccess, InplaceUpdateRequirement, ToolTimeLimit, SubworkflowFeatureRequirement, ScatterFeatureRequirement, MultipleInputFeatureRequirement, StepInputExpressionRequirement>>>> requirements;
@@ -1626,7 +1587,6 @@ struct EnvironmentDef {
 namespace https___w3id_org_cwl_cwl {
 struct CommandLineBinding
     : https___w3id_org_cwl_cwl::InputBinding {
-    heap_object<std::variant<std::monostate, bool>> loadContents;
     heap_object<std::variant<std::monostate, int32_t, Expression>> position;
     heap_object<std::variant<std::monostate, std::string>> prefix;
     heap_object<std::variant<std::monostate, bool>> separate;
@@ -1640,8 +1600,6 @@ struct CommandLineBinding
 namespace https___w3id_org_cwl_cwl {
 struct CommandOutputBinding
     : https___w3id_org_cwl_cwl::LoadContents {
-    heap_object<std::variant<std::monostate, bool>> loadContents;
-    heap_object<std::variant<std::monostate, LoadListingEnum>> loadListing;
     heap_object<std::variant<std::monostate, std::string, Expression, std::vector<std::string>>> glob;
     heap_object<std::variant<std::monostate, Expression>> outputEval;
     auto toYaml() const -> YAML::Node override;
@@ -1656,9 +1614,7 @@ struct CommandLineBindable {
 }
 
 namespace https___w3id_org_cwl_cwl {
-struct CommandInputRecordField
-    : https___w3id_org_cwl_cwl::InputRecordField
-    , https___w3id_org_cwl_cwl::CommandLineBindable {
+struct CommandInputRecordField {
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::string> name;
     heap_object<std::variant<CWLType, CommandInputRecordSchema, CommandInputEnumSchema, CommandInputArraySchema, std::string, std::vector<std::variant<CWLType, CommandInputRecordSchema, CommandInputEnumSchema, CommandInputArraySchema, std::string>>>> type;
@@ -1669,58 +1625,48 @@ struct CommandInputRecordField
     heap_object<std::variant<std::monostate, bool>> loadContents;
     heap_object<std::variant<std::monostate, LoadListingEnum>> loadListing;
     heap_object<std::variant<std::monostate, CommandLineBinding>> inputBinding;
-    auto toYaml() const -> YAML::Node override;
+    virtual auto toYaml() const -> YAML::Node;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
-struct CommandInputRecordSchema
-    : https___w3id_org_cwl_cwl::InputRecordSchema
-    , https___w3id_org_cwl_cwl::CommandInputSchema
-    , https___w3id_org_cwl_cwl::CommandLineBindable {
+struct CommandInputRecordSchema {
     heap_object<std::variant<std::monostate, std::vector<CommandInputRecordField>>> fields;
-    heap_object<anon_enum_d9cba076fca539106791a4f46d198c7fcfbdb779> type;
+    heap_object<https___w3id_org_cwl_salad::RecordSchema_type_Record_name> type;
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, std::string>> name;
     heap_object<std::variant<std::monostate, CommandLineBinding>> inputBinding;
-    auto toYaml() const -> YAML::Node override;
+    virtual auto toYaml() const -> YAML::Node;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
-struct CommandInputEnumSchema
-    : https___w3id_org_cwl_cwl::InputEnumSchema
-    , https___w3id_org_cwl_cwl::CommandInputSchema
-    , https___w3id_org_cwl_cwl::CommandLineBindable {
+struct CommandInputEnumSchema {
+    heap_object<std::variant<std::monostate, std::string>> name;
     heap_object<std::vector<std::string>> symbols;
-    heap_object<anon_enum_d961d79c225752b9fadb617367615ab176b47d77> type;
+    heap_object<https___w3id_org_cwl_salad::EnumSchema_type_Enum_name> type;
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
-    heap_object<std::variant<std::monostate, std::string>> name;
     heap_object<std::variant<std::monostate, CommandLineBinding>> inputBinding;
-    auto toYaml() const -> YAML::Node override;
+    virtual auto toYaml() const -> YAML::Node;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
-struct CommandInputArraySchema
-    : https___w3id_org_cwl_cwl::InputArraySchema
-    , https___w3id_org_cwl_cwl::CommandInputSchema
-    , https___w3id_org_cwl_cwl::CommandLineBindable {
+struct CommandInputArraySchema {
     heap_object<std::variant<CWLType, CommandInputRecordSchema, CommandInputEnumSchema, CommandInputArraySchema, std::string, std::vector<std::variant<CWLType, CommandInputRecordSchema, CommandInputEnumSchema, CommandInputArraySchema, std::string>>>> items;
-    heap_object<anon_enum_d062602be0b4b8fd33e69e29a841317b6ab665bc> type;
+    heap_object<https___w3id_org_cwl_salad::ArraySchema_type_Array_name> type;
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, std::string>> name;
     heap_object<std::variant<std::monostate, CommandLineBinding>> inputBinding;
-    auto toYaml() const -> YAML::Node override;
+    virtual auto toYaml() const -> YAML::Node;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
-struct CommandOutputRecordField
-    : https___w3id_org_cwl_cwl::OutputRecordField {
+struct CommandOutputRecordField {
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::string> name;
     heap_object<std::variant<CWLType, CommandOutputRecordSchema, CommandOutputEnumSchema, CommandOutputArraySchema, std::string, std::vector<std::variant<CWLType, CommandOutputRecordSchema, CommandOutputEnumSchema, CommandOutputArraySchema, std::string>>>> type;
@@ -1729,58 +1675,46 @@ struct CommandOutputRecordField
     heap_object<std::variant<std::monostate, bool>> streamable;
     heap_object<std::variant<std::monostate, std::string, Expression>> format;
     heap_object<std::variant<std::monostate, CommandOutputBinding>> outputBinding;
-    auto toYaml() const -> YAML::Node override;
+    virtual auto toYaml() const -> YAML::Node;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
-struct CommandOutputRecordSchema
-    : https___w3id_org_cwl_cwl::OutputRecordSchema {
+struct CommandOutputRecordSchema {
     heap_object<std::variant<std::monostate, std::vector<CommandOutputRecordField>>> fields;
-    heap_object<anon_enum_d9cba076fca539106791a4f46d198c7fcfbdb779> type;
+    heap_object<https___w3id_org_cwl_salad::RecordSchema_type_Record_name> type;
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, std::string>> name;
-    auto toYaml() const -> YAML::Node override;
+    virtual auto toYaml() const -> YAML::Node;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
-struct CommandOutputEnumSchema
-    : https___w3id_org_cwl_cwl::OutputEnumSchema {
+struct CommandOutputEnumSchema {
+    heap_object<std::variant<std::monostate, std::string>> name;
     heap_object<std::vector<std::string>> symbols;
-    heap_object<anon_enum_d961d79c225752b9fadb617367615ab176b47d77> type;
+    heap_object<https___w3id_org_cwl_salad::EnumSchema_type_Enum_name> type;
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
-    heap_object<std::variant<std::monostate, std::string>> name;
-    auto toYaml() const -> YAML::Node override;
+    virtual auto toYaml() const -> YAML::Node;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
-struct CommandOutputArraySchema
-    : https___w3id_org_cwl_cwl::OutputArraySchema {
+struct CommandOutputArraySchema {
     heap_object<std::variant<CWLType, CommandOutputRecordSchema, CommandOutputEnumSchema, CommandOutputArraySchema, std::string, std::vector<std::variant<CWLType, CommandOutputRecordSchema, CommandOutputEnumSchema, CommandOutputArraySchema, std::string>>>> items;
-    heap_object<anon_enum_d062602be0b4b8fd33e69e29a841317b6ab665bc> type;
+    heap_object<https___w3id_org_cwl_salad::ArraySchema_type_Array_name> type;
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, std::string>> name;
-    auto toYaml() const -> YAML::Node override;
+    virtual auto toYaml() const -> YAML::Node;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
 struct CommandInputParameter
     : https___w3id_org_cwl_cwl::InputParameter {
-    heap_object<std::variant<std::monostate, std::string>> label;
-    heap_object<std::variant<std::monostate, SecondaryFileSchema, std::vector<SecondaryFileSchema>>> secondaryFiles;
-    heap_object<std::variant<std::monostate, bool>> streamable;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
-    heap_object<std::variant<std::monostate, std::string>> id;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>, Expression>> format;
-    heap_object<std::variant<std::monostate, bool>> loadContents;
-    heap_object<std::variant<std::monostate, LoadListingEnum>> loadListing;
-    heap_object<std::variant<std::monostate, File, Directory, std::any>> default_;
     heap_object<std::variant<CWLType, stdin_, CommandInputRecordSchema, CommandInputEnumSchema, CommandInputArraySchema, std::string, std::vector<std::variant<CWLType, CommandInputRecordSchema, CommandInputEnumSchema, CommandInputArraySchema, std::string>>>> type;
     heap_object<std::variant<std::monostate, CommandLineBinding>> inputBinding;
     auto toYaml() const -> YAML::Node override;
@@ -1790,12 +1724,6 @@ struct CommandInputParameter
 namespace https___w3id_org_cwl_cwl {
 struct CommandOutputParameter
     : https___w3id_org_cwl_cwl::OutputParameter {
-    heap_object<std::variant<std::monostate, std::string>> label;
-    heap_object<std::variant<std::monostate, SecondaryFileSchema, std::vector<SecondaryFileSchema>>> secondaryFiles;
-    heap_object<std::variant<std::monostate, bool>> streamable;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
-    heap_object<std::variant<std::monostate, std::string>> id;
-    heap_object<std::variant<std::monostate, std::string, Expression>> format;
     heap_object<std::variant<CWLType, stdout_, stderr_, CommandOutputRecordSchema, CommandOutputEnumSchema, CommandOutputArraySchema, std::string, std::vector<std::variant<CWLType, CommandOutputRecordSchema, CommandOutputEnumSchema, CommandOutputArraySchema, std::string>>>> type;
     heap_object<std::variant<std::monostate, CommandOutputBinding>> outputBinding;
     auto toYaml() const -> YAML::Node override;
@@ -1803,8 +1731,7 @@ struct CommandOutputParameter
 }
 
 namespace https___w3id_org_cwl_cwl {
-struct CommandLineTool
-    : https___w3id_org_cwl_cwl::Process {
+struct CommandLineTool {
     heap_object<std::variant<std::monostate, std::string>> id;
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
@@ -1823,7 +1750,7 @@ struct CommandLineTool
     heap_object<std::variant<std::monostate, std::vector<int32_t>>> successCodes;
     heap_object<std::variant<std::monostate, std::vector<int32_t>>> temporaryFailCodes;
     heap_object<std::variant<std::monostate, std::vector<int32_t>>> permanentFailCodes;
-    auto toYaml() const -> YAML::Node override;
+    virtual auto toYaml() const -> YAML::Node;
 };
 }
 
@@ -1949,12 +1876,6 @@ struct ToolTimeLimit
 namespace https___w3id_org_cwl_cwl {
 struct ExpressionToolOutputParameter
     : https___w3id_org_cwl_cwl::OutputParameter {
-    heap_object<std::variant<std::monostate, std::string>> label;
-    heap_object<std::variant<std::monostate, SecondaryFileSchema, std::vector<SecondaryFileSchema>>> secondaryFiles;
-    heap_object<std::variant<std::monostate, bool>> streamable;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
-    heap_object<std::variant<std::monostate, std::string>> id;
-    heap_object<std::variant<std::monostate, std::string, Expression>> format;
     heap_object<std::variant<CWLType, OutputRecordSchema, OutputEnumSchema, OutputArraySchema, std::string, std::vector<std::variant<CWLType, OutputRecordSchema, OutputEnumSchema, OutputArraySchema, std::string>>>> type;
     auto toYaml() const -> YAML::Node override;
 };
@@ -1963,15 +1884,6 @@ struct ExpressionToolOutputParameter
 namespace https___w3id_org_cwl_cwl {
 struct WorkflowInputParameter
     : https___w3id_org_cwl_cwl::InputParameter {
-    heap_object<std::variant<std::monostate, std::string>> label;
-    heap_object<std::variant<std::monostate, SecondaryFileSchema, std::vector<SecondaryFileSchema>>> secondaryFiles;
-    heap_object<std::variant<std::monostate, bool>> streamable;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
-    heap_object<std::variant<std::monostate, std::string>> id;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>, Expression>> format;
-    heap_object<std::variant<std::monostate, bool>> loadContents;
-    heap_object<std::variant<std::monostate, LoadListingEnum>> loadListing;
-    heap_object<std::variant<std::monostate, File, Directory, std::any>> default_;
     heap_object<std::variant<CWLType, InputRecordSchema, InputEnumSchema, InputArraySchema, std::string, std::vector<std::variant<CWLType, InputRecordSchema, InputEnumSchema, InputArraySchema, std::string>>>> type;
     heap_object<std::variant<std::monostate, InputBinding>> inputBinding;
     auto toYaml() const -> YAML::Node override;
@@ -1979,8 +1891,7 @@ struct WorkflowInputParameter
 }
 
 namespace https___w3id_org_cwl_cwl {
-struct ExpressionTool
-    : https___w3id_org_cwl_cwl::Process {
+struct ExpressionTool {
     heap_object<std::variant<std::monostate, std::string>> id;
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
@@ -1992,19 +1903,13 @@ struct ExpressionTool
     heap_object<std::variant<std::monostate, std::vector<std::string>>> intent;
     heap_object<ExpressionTool_class_ExpressionTool_class> class_;
     heap_object<Expression> expression;
-    auto toYaml() const -> YAML::Node override;
+    virtual auto toYaml() const -> YAML::Node;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
 struct WorkflowOutputParameter
     : https___w3id_org_cwl_cwl::OutputParameter {
-    heap_object<std::variant<std::monostate, std::string>> label;
-    heap_object<std::variant<std::monostate, SecondaryFileSchema, std::vector<SecondaryFileSchema>>> secondaryFiles;
-    heap_object<std::variant<std::monostate, bool>> streamable;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
-    heap_object<std::variant<std::monostate, std::string>> id;
-    heap_object<std::variant<std::monostate, std::string, Expression>> format;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> outputSource;
     heap_object<std::variant<std::monostate, LinkMergeMethod>> linkMerge;
     heap_object<std::variant<std::monostate, PickValueMethod>> pickValue;
@@ -2029,13 +1934,6 @@ struct WorkflowStepInput
     , https___w3id_org_cwl_cwl::Sink
     , https___w3id_org_cwl_cwl::LoadContents
     , https___w3id_org_cwl_cwl::Labeled {
-    heap_object<std::variant<std::monostate, std::string>> id;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> source;
-    heap_object<std::variant<std::monostate, LinkMergeMethod>> linkMerge;
-    heap_object<std::variant<std::monostate, PickValueMethod>> pickValue;
-    heap_object<std::variant<std::monostate, bool>> loadContents;
-    heap_object<std::variant<std::monostate, LoadListingEnum>> loadListing;
-    heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, File, Directory, std::any>> default_;
     heap_object<std::variant<std::monostate, std::string, Expression>> valueFrom;
     auto toYaml() const -> YAML::Node override;
@@ -2045,7 +1943,6 @@ struct WorkflowStepInput
 namespace https___w3id_org_cwl_cwl {
 struct WorkflowStepOutput
     : https___w3id_org_cwl_cwl::Identified {
-    heap_object<std::variant<std::monostate, std::string>> id;
     auto toYaml() const -> YAML::Node override;
 };
 }
@@ -2055,9 +1952,6 @@ struct WorkflowStep
     : https___w3id_org_cwl_cwl::Identified
     , https___w3id_org_cwl_cwl::Labeled
     , https___w3id_org_cwl_salad::Documented {
-    heap_object<std::variant<std::monostate, std::string>> id;
-    heap_object<std::variant<std::monostate, std::string>> label;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::vector<WorkflowStepInput>> in;
     heap_object<std::vector<std::variant<std::string, WorkflowStepOutput>>> out;
     heap_object<std::variant<std::monostate, std::vector<std::variant<InlineJavascriptRequirement, SchemaDefRequirement, LoadListingRequirement, DockerRequirement, SoftwareRequirement, InitialWorkDirRequirement, EnvVarRequirement, ShellCommandRequirement, ResourceRequirement, WorkReuse, NetworkAccess, InplaceUpdateRequirement, ToolTimeLimit, SubworkflowFeatureRequirement, ScatterFeatureRequirement, MultipleInputFeatureRequirement, StepInputExpressionRequirement>>>> requirements;
@@ -2071,8 +1965,7 @@ struct WorkflowStep
 }
 
 namespace https___w3id_org_cwl_cwl {
-struct Workflow
-    : https___w3id_org_cwl_cwl::Process {
+struct Workflow {
     heap_object<std::variant<std::monostate, std::string>> id;
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
@@ -2084,7 +1977,7 @@ struct Workflow
     heap_object<std::variant<std::monostate, std::vector<std::string>>> intent;
     heap_object<Workflow_class_Workflow_class> class_;
     heap_object<std::vector<WorkflowStep>> steps;
-    auto toYaml() const -> YAML::Node override;
+    virtual auto toYaml() const -> YAML::Node;
 };
 }
 
@@ -2123,15 +2016,6 @@ struct StepInputExpressionRequirement
 namespace https___w3id_org_cwl_cwl {
 struct OperationInputParameter
     : https___w3id_org_cwl_cwl::InputParameter {
-    heap_object<std::variant<std::monostate, std::string>> label;
-    heap_object<std::variant<std::monostate, SecondaryFileSchema, std::vector<SecondaryFileSchema>>> secondaryFiles;
-    heap_object<std::variant<std::monostate, bool>> streamable;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
-    heap_object<std::variant<std::monostate, std::string>> id;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>, Expression>> format;
-    heap_object<std::variant<std::monostate, bool>> loadContents;
-    heap_object<std::variant<std::monostate, LoadListingEnum>> loadListing;
-    heap_object<std::variant<std::monostate, File, Directory, std::any>> default_;
     heap_object<std::variant<CWLType, InputRecordSchema, InputEnumSchema, InputArraySchema, std::string, std::vector<std::variant<CWLType, InputRecordSchema, InputEnumSchema, InputArraySchema, std::string>>>> type;
     auto toYaml() const -> YAML::Node override;
 };
@@ -2140,20 +2024,13 @@ struct OperationInputParameter
 namespace https___w3id_org_cwl_cwl {
 struct OperationOutputParameter
     : https___w3id_org_cwl_cwl::OutputParameter {
-    heap_object<std::variant<std::monostate, std::string>> label;
-    heap_object<std::variant<std::monostate, SecondaryFileSchema, std::vector<SecondaryFileSchema>>> secondaryFiles;
-    heap_object<std::variant<std::monostate, bool>> streamable;
-    heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
-    heap_object<std::variant<std::monostate, std::string>> id;
-    heap_object<std::variant<std::monostate, std::string, Expression>> format;
     heap_object<std::variant<CWLType, OutputRecordSchema, OutputEnumSchema, OutputArraySchema, std::string, std::vector<std::variant<CWLType, OutputRecordSchema, OutputEnumSchema, OutputArraySchema, std::string>>>> type;
     auto toYaml() const -> YAML::Node override;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
-struct Operation
-    : https___w3id_org_cwl_cwl::Process {
+struct Operation {
     heap_object<std::variant<std::monostate, std::string>> id;
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
@@ -2164,7 +2041,7 @@ struct Operation
     heap_object<std::variant<std::monostate, CWLVersion>> cwlVersion;
     heap_object<std::variant<std::monostate, std::vector<std::string>>> intent;
     heap_object<Operation_class_Operation_class> class_;
-    auto toYaml() const -> YAML::Node override;
+    virtual auto toYaml() const -> YAML::Node;
 };
 }
 
@@ -2179,7 +2056,6 @@ inline auto https___w3id_org_cwl_salad::RecordField::toYaml() const -> YAML::Nod
     using ::toYaml;
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_salad::Documented::toYaml());
-    addYamlField(n, "doc", toYaml(*doc));
     addYamlField(n, "name", toYaml(*name));
     addYamlField(n, "type", toYaml(*type));
     return n;
@@ -2187,13 +2063,15 @@ inline auto https___w3id_org_cwl_salad::RecordField::toYaml() const -> YAML::Nod
 inline auto https___w3id_org_cwl_salad::RecordSchema::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    addYamlField(n, "fields", toYaml(*fields));
+    addYamlField(n, "fields",
+convertListToMap(toYaml(*fields), "name"));
     addYamlField(n, "type", toYaml(*type));
     return n;
 }
 inline auto https___w3id_org_cwl_salad::EnumSchema::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
+    addYamlField(n, "name", toYaml(*name));
     addYamlField(n, "symbols", toYaml(*symbols));
     addYamlField(n, "type", toYaml(*type));
     return n;
@@ -2259,7 +2137,6 @@ inline auto https___w3id_org_cwl_cwl::FieldBase::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_cwl::Labeled::toYaml());
-    addYamlField(n, "label", toYaml(*label));
     addYamlField(n, "secondaryFiles", toYaml(*secondaryFiles));
     addYamlField(n, "streamable", toYaml(*streamable));
     return n;
@@ -2285,11 +2162,6 @@ inline auto https___w3id_org_cwl_cwl::Parameter::toYaml() const -> YAML::Node {
     n = mergeYaml(n, https___w3id_org_cwl_cwl::FieldBase::toYaml());
     n = mergeYaml(n, https___w3id_org_cwl_salad::Documented::toYaml());
     n = mergeYaml(n, https___w3id_org_cwl_cwl::Identified::toYaml());
-    addYamlField(n, "label", toYaml(*label));
-    addYamlField(n, "secondaryFiles", toYaml(*secondaryFiles));
-    addYamlField(n, "streamable", toYaml(*streamable));
-    addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "id", toYaml(*id));
     return n;
 }
 inline auto https___w3id_org_cwl_cwl::InputBinding::toYaml() const -> YAML::Node {
@@ -2304,8 +2176,6 @@ inline auto https___w3id_org_cwl_cwl::IOSchema::toYaml() const -> YAML::Node {
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_cwl::Labeled::toYaml());
     n = mergeYaml(n, https___w3id_org_cwl_salad::Documented::toYaml());
-    addYamlField(n, "label", toYaml(*label));
-    addYamlField(n, "doc", toYaml(*doc));
     addYamlField(n, "name", toYaml(*name));
     return n;
 }
@@ -2314,9 +2184,6 @@ inline auto https___w3id_org_cwl_cwl::InputSchema::toYaml() const -> YAML::Node 
     using ::toYaml;
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_cwl::IOSchema::toYaml());
-    addYamlField(n, "label", toYaml(*label));
-    addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "name", toYaml(*name));
     return n;
 }
 inline https___w3id_org_cwl_cwl::OutputSchema::~OutputSchema() = default;
@@ -2324,18 +2191,11 @@ inline auto https___w3id_org_cwl_cwl::OutputSchema::toYaml() const -> YAML::Node
     using ::toYaml;
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_cwl::IOSchema::toYaml());
-    addYamlField(n, "label", toYaml(*label));
-    addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "name", toYaml(*name));
     return n;
 }
 inline auto https___w3id_org_cwl_cwl::InputRecordField::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    n = mergeYaml(n, https___w3id_org_cwl_salad::RecordField::toYaml());
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::FieldBase::toYaml());
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::InputFormat::toYaml());
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::LoadContents::toYaml());
     addYamlField(n, "doc", toYaml(*doc));
     addYamlField(n, "name", toYaml(*name));
     addYamlField(n, "type", toYaml(*type));
@@ -2350,9 +2210,8 @@ inline auto https___w3id_org_cwl_cwl::InputRecordField::toYaml() const -> YAML::
 inline auto https___w3id_org_cwl_cwl::InputRecordSchema::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    n = mergeYaml(n, https___w3id_org_cwl_salad::RecordSchema::toYaml());
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::InputSchema::toYaml());
-    addYamlField(n, "fields", toYaml(*fields));
+    addYamlField(n, "fields",
+convertListToMap(toYaml(*fields), "name"));
     addYamlField(n, "type", toYaml(*type));
     addYamlField(n, "label", toYaml(*label));
     addYamlField(n, "doc", toYaml(*doc));
@@ -2364,18 +2223,11 @@ inline auto https___w3id_org_cwl_cwl::InputEnumSchema::toYaml() const -> YAML::N
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_salad::EnumSchema::toYaml());
     n = mergeYaml(n, https___w3id_org_cwl_cwl::InputSchema::toYaml());
-    addYamlField(n, "symbols", toYaml(*symbols));
-    addYamlField(n, "type", toYaml(*type));
-    addYamlField(n, "label", toYaml(*label));
-    addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "name", toYaml(*name));
     return n;
 }
 inline auto https___w3id_org_cwl_cwl::InputArraySchema::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    n = mergeYaml(n, https___w3id_org_cwl_salad::ArraySchema::toYaml());
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::InputSchema::toYaml());
     addYamlField(n, "items", toYaml(*items));
     addYamlField(n, "type", toYaml(*type));
     addYamlField(n, "label", toYaml(*label));
@@ -2386,9 +2238,6 @@ inline auto https___w3id_org_cwl_cwl::InputArraySchema::toYaml() const -> YAML::
 inline auto https___w3id_org_cwl_cwl::OutputRecordField::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    n = mergeYaml(n, https___w3id_org_cwl_salad::RecordField::toYaml());
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::FieldBase::toYaml());
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::OutputFormat::toYaml());
     addYamlField(n, "doc", toYaml(*doc));
     addYamlField(n, "name", toYaml(*name));
     addYamlField(n, "type", toYaml(*type));
@@ -2401,9 +2250,8 @@ inline auto https___w3id_org_cwl_cwl::OutputRecordField::toYaml() const -> YAML:
 inline auto https___w3id_org_cwl_cwl::OutputRecordSchema::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    n = mergeYaml(n, https___w3id_org_cwl_salad::RecordSchema::toYaml());
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::OutputSchema::toYaml());
-    addYamlField(n, "fields", toYaml(*fields));
+    addYamlField(n, "fields",
+convertListToMap(toYaml(*fields), "name"));
     addYamlField(n, "type", toYaml(*type));
     addYamlField(n, "label", toYaml(*label));
     addYamlField(n, "doc", toYaml(*doc));
@@ -2415,18 +2263,11 @@ inline auto https___w3id_org_cwl_cwl::OutputEnumSchema::toYaml() const -> YAML::
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_salad::EnumSchema::toYaml());
     n = mergeYaml(n, https___w3id_org_cwl_cwl::OutputSchema::toYaml());
-    addYamlField(n, "symbols", toYaml(*symbols));
-    addYamlField(n, "type", toYaml(*type));
-    addYamlField(n, "label", toYaml(*label));
-    addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "name", toYaml(*name));
     return n;
 }
 inline auto https___w3id_org_cwl_cwl::OutputArraySchema::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    n = mergeYaml(n, https___w3id_org_cwl_salad::ArraySchema::toYaml());
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::OutputSchema::toYaml());
     addYamlField(n, "items", toYaml(*items));
     addYamlField(n, "type", toYaml(*type));
     addYamlField(n, "label", toYaml(*label));
@@ -2441,14 +2282,6 @@ inline auto https___w3id_org_cwl_cwl::InputParameter::toYaml() const -> YAML::No
     n = mergeYaml(n, https___w3id_org_cwl_cwl::Parameter::toYaml());
     n = mergeYaml(n, https___w3id_org_cwl_cwl::InputFormat::toYaml());
     n = mergeYaml(n, https___w3id_org_cwl_cwl::LoadContents::toYaml());
-    addYamlField(n, "label", toYaml(*label));
-    addYamlField(n, "secondaryFiles", toYaml(*secondaryFiles));
-    addYamlField(n, "streamable", toYaml(*streamable));
-    addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "id", toYaml(*id));
-    addYamlField(n, "format", toYaml(*format));
-    addYamlField(n, "loadContents", toYaml(*loadContents));
-    addYamlField(n, "loadListing", toYaml(*loadListing));
     addYamlField(n, "default", toYaml(*default_));
     return n;
 }
@@ -2458,12 +2291,6 @@ inline auto https___w3id_org_cwl_cwl::OutputParameter::toYaml() const -> YAML::N
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_cwl::Parameter::toYaml());
     n = mergeYaml(n, https___w3id_org_cwl_cwl::OutputFormat::toYaml());
-    addYamlField(n, "label", toYaml(*label));
-    addYamlField(n, "secondaryFiles", toYaml(*secondaryFiles));
-    addYamlField(n, "streamable", toYaml(*streamable));
-    addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "id", toYaml(*id));
-    addYamlField(n, "format", toYaml(*format));
     return n;
 }
 inline https___w3id_org_cwl_cwl::ProcessRequirement::~ProcessRequirement() = default;
@@ -2479,13 +2306,14 @@ inline auto https___w3id_org_cwl_cwl::Process::toYaml() const -> YAML::Node {
     n = mergeYaml(n, https___w3id_org_cwl_cwl::Identified::toYaml());
     n = mergeYaml(n, https___w3id_org_cwl_cwl::Labeled::toYaml());
     n = mergeYaml(n, https___w3id_org_cwl_salad::Documented::toYaml());
-    addYamlField(n, "id", toYaml(*id));
-    addYamlField(n, "label", toYaml(*label));
-    addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "inputs", toYaml(*inputs));
-    addYamlField(n, "outputs", toYaml(*outputs));
-    addYamlField(n, "requirements", toYaml(*requirements));
-    addYamlField(n, "hints", toYaml(*hints));
+    addYamlField(n, "inputs",
+convertListToMap(toYaml(*inputs), "id"));
+    addYamlField(n, "outputs",
+convertListToMap(toYaml(*outputs), "id"));
+    addYamlField(n, "requirements",
+convertListToMap(toYaml(*requirements), "class"));
+    addYamlField(n, "hints",
+convertListToMap(toYaml(*hints), "class"));
     addYamlField(n, "cwlVersion", toYaml(*cwlVersion));
     addYamlField(n, "intent", toYaml(*intent));
     return n;
@@ -2538,7 +2366,6 @@ inline auto https___w3id_org_cwl_cwl::CommandLineBinding::toYaml() const -> YAML
     using ::toYaml;
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_cwl::InputBinding::toYaml());
-    addYamlField(n, "loadContents", toYaml(*loadContents));
     addYamlField(n, "position", toYaml(*position));
     addYamlField(n, "prefix", toYaml(*prefix));
     addYamlField(n, "separate", toYaml(*separate));
@@ -2551,8 +2378,6 @@ inline auto https___w3id_org_cwl_cwl::CommandOutputBinding::toYaml() const -> YA
     using ::toYaml;
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_cwl::LoadContents::toYaml());
-    addYamlField(n, "loadContents", toYaml(*loadContents));
-    addYamlField(n, "loadListing", toYaml(*loadListing));
     addYamlField(n, "glob", toYaml(*glob));
     addYamlField(n, "outputEval", toYaml(*outputEval));
     return n;
@@ -2566,8 +2391,6 @@ inline auto https___w3id_org_cwl_cwl::CommandLineBindable::toYaml() const -> YAM
 inline auto https___w3id_org_cwl_cwl::CommandInputRecordField::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::InputRecordField::toYaml());
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::CommandLineBindable::toYaml());
     addYamlField(n, "doc", toYaml(*doc));
     addYamlField(n, "name", toYaml(*name));
     addYamlField(n, "type", toYaml(*type));
@@ -2583,10 +2406,8 @@ inline auto https___w3id_org_cwl_cwl::CommandInputRecordField::toYaml() const ->
 inline auto https___w3id_org_cwl_cwl::CommandInputRecordSchema::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::InputRecordSchema::toYaml());
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::CommandInputSchema::toYaml());
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::CommandLineBindable::toYaml());
-    addYamlField(n, "fields", toYaml(*fields));
+    addYamlField(n, "fields",
+convertListToMap(toYaml(*fields), "name"));
     addYamlField(n, "type", toYaml(*type));
     addYamlField(n, "label", toYaml(*label));
     addYamlField(n, "doc", toYaml(*doc));
@@ -2597,23 +2418,17 @@ inline auto https___w3id_org_cwl_cwl::CommandInputRecordSchema::toYaml() const -
 inline auto https___w3id_org_cwl_cwl::CommandInputEnumSchema::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::InputEnumSchema::toYaml());
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::CommandInputSchema::toYaml());
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::CommandLineBindable::toYaml());
+    addYamlField(n, "name", toYaml(*name));
     addYamlField(n, "symbols", toYaml(*symbols));
     addYamlField(n, "type", toYaml(*type));
     addYamlField(n, "label", toYaml(*label));
     addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "name", toYaml(*name));
     addYamlField(n, "inputBinding", toYaml(*inputBinding));
     return n;
 }
 inline auto https___w3id_org_cwl_cwl::CommandInputArraySchema::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::InputArraySchema::toYaml());
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::CommandInputSchema::toYaml());
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::CommandLineBindable::toYaml());
     addYamlField(n, "items", toYaml(*items));
     addYamlField(n, "type", toYaml(*type));
     addYamlField(n, "label", toYaml(*label));
@@ -2625,7 +2440,6 @@ inline auto https___w3id_org_cwl_cwl::CommandInputArraySchema::toYaml() const ->
 inline auto https___w3id_org_cwl_cwl::CommandOutputRecordField::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::OutputRecordField::toYaml());
     addYamlField(n, "doc", toYaml(*doc));
     addYamlField(n, "name", toYaml(*name));
     addYamlField(n, "type", toYaml(*type));
@@ -2639,8 +2453,8 @@ inline auto https___w3id_org_cwl_cwl::CommandOutputRecordField::toYaml() const -
 inline auto https___w3id_org_cwl_cwl::CommandOutputRecordSchema::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::OutputRecordSchema::toYaml());
-    addYamlField(n, "fields", toYaml(*fields));
+    addYamlField(n, "fields",
+convertListToMap(toYaml(*fields), "name"));
     addYamlField(n, "type", toYaml(*type));
     addYamlField(n, "label", toYaml(*label));
     addYamlField(n, "doc", toYaml(*doc));
@@ -2650,18 +2464,16 @@ inline auto https___w3id_org_cwl_cwl::CommandOutputRecordSchema::toYaml() const 
 inline auto https___w3id_org_cwl_cwl::CommandOutputEnumSchema::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::OutputEnumSchema::toYaml());
+    addYamlField(n, "name", toYaml(*name));
     addYamlField(n, "symbols", toYaml(*symbols));
     addYamlField(n, "type", toYaml(*type));
     addYamlField(n, "label", toYaml(*label));
     addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "name", toYaml(*name));
     return n;
 }
 inline auto https___w3id_org_cwl_cwl::CommandOutputArraySchema::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::OutputArraySchema::toYaml());
     addYamlField(n, "items", toYaml(*items));
     addYamlField(n, "type", toYaml(*type));
     addYamlField(n, "label", toYaml(*label));
@@ -2673,15 +2485,6 @@ inline auto https___w3id_org_cwl_cwl::CommandInputParameter::toYaml() const -> Y
     using ::toYaml;
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_cwl::InputParameter::toYaml());
-    addYamlField(n, "label", toYaml(*label));
-    addYamlField(n, "secondaryFiles", toYaml(*secondaryFiles));
-    addYamlField(n, "streamable", toYaml(*streamable));
-    addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "id", toYaml(*id));
-    addYamlField(n, "format", toYaml(*format));
-    addYamlField(n, "loadContents", toYaml(*loadContents));
-    addYamlField(n, "loadListing", toYaml(*loadListing));
-    addYamlField(n, "default", toYaml(*default_));
     addYamlField(n, "type", toYaml(*type));
     addYamlField(n, "inputBinding", toYaml(*inputBinding));
     return n;
@@ -2690,12 +2493,6 @@ inline auto https___w3id_org_cwl_cwl::CommandOutputParameter::toYaml() const -> 
     using ::toYaml;
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_cwl::OutputParameter::toYaml());
-    addYamlField(n, "label", toYaml(*label));
-    addYamlField(n, "secondaryFiles", toYaml(*secondaryFiles));
-    addYamlField(n, "streamable", toYaml(*streamable));
-    addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "id", toYaml(*id));
-    addYamlField(n, "format", toYaml(*format));
     addYamlField(n, "type", toYaml(*type));
     addYamlField(n, "outputBinding", toYaml(*outputBinding));
     return n;
@@ -2703,14 +2500,17 @@ inline auto https___w3id_org_cwl_cwl::CommandOutputParameter::toYaml() const -> 
 inline auto https___w3id_org_cwl_cwl::CommandLineTool::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::Process::toYaml());
     addYamlField(n, "id", toYaml(*id));
     addYamlField(n, "label", toYaml(*label));
     addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "inputs", toYaml(*inputs));
-    addYamlField(n, "outputs", toYaml(*outputs));
-    addYamlField(n, "requirements", toYaml(*requirements));
-    addYamlField(n, "hints", toYaml(*hints));
+    addYamlField(n, "inputs",
+convertListToMap(toYaml(*inputs), "id"));
+    addYamlField(n, "outputs",
+convertListToMap(toYaml(*outputs), "id"));
+    addYamlField(n, "requirements",
+convertListToMap(toYaml(*requirements), "class"));
+    addYamlField(n, "hints",
+convertListToMap(toYaml(*hints), "class"));
     addYamlField(n, "cwlVersion", toYaml(*cwlVersion));
     addYamlField(n, "intent", toYaml(*intent));
     addYamlField(n, "class", toYaml(*class_));
@@ -2742,7 +2542,8 @@ inline auto https___w3id_org_cwl_cwl::SoftwareRequirement::toYaml() const -> YAM
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_cwl::ProcessRequirement::toYaml());
     addYamlField(n, "class", toYaml(*class_));
-    addYamlField(n, "packages", toYaml(*packages));
+    addYamlField(n, "packages",
+convertListToMap(toYaml(*packages), "package"));
     return n;
 }
 inline auto https___w3id_org_cwl_cwl::SoftwarePackage::toYaml() const -> YAML::Node {
@@ -2774,7 +2575,8 @@ inline auto https___w3id_org_cwl_cwl::EnvVarRequirement::toYaml() const -> YAML:
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_cwl::ProcessRequirement::toYaml());
     addYamlField(n, "class", toYaml(*class_));
-    addYamlField(n, "envDef", toYaml(*envDef));
+    addYamlField(n, "envDef",
+convertListToMap(toYaml(*envDef), "envName"));
     return n;
 }
 inline auto https___w3id_org_cwl_cwl::ShellCommandRequirement::toYaml() const -> YAML::Node {
@@ -2835,12 +2637,6 @@ inline auto https___w3id_org_cwl_cwl::ExpressionToolOutputParameter::toYaml() co
     using ::toYaml;
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_cwl::OutputParameter::toYaml());
-    addYamlField(n, "label", toYaml(*label));
-    addYamlField(n, "secondaryFiles", toYaml(*secondaryFiles));
-    addYamlField(n, "streamable", toYaml(*streamable));
-    addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "id", toYaml(*id));
-    addYamlField(n, "format", toYaml(*format));
     addYamlField(n, "type", toYaml(*type));
     return n;
 }
@@ -2848,15 +2644,6 @@ inline auto https___w3id_org_cwl_cwl::WorkflowInputParameter::toYaml() const -> 
     using ::toYaml;
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_cwl::InputParameter::toYaml());
-    addYamlField(n, "label", toYaml(*label));
-    addYamlField(n, "secondaryFiles", toYaml(*secondaryFiles));
-    addYamlField(n, "streamable", toYaml(*streamable));
-    addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "id", toYaml(*id));
-    addYamlField(n, "format", toYaml(*format));
-    addYamlField(n, "loadContents", toYaml(*loadContents));
-    addYamlField(n, "loadListing", toYaml(*loadListing));
-    addYamlField(n, "default", toYaml(*default_));
     addYamlField(n, "type", toYaml(*type));
     addYamlField(n, "inputBinding", toYaml(*inputBinding));
     return n;
@@ -2864,14 +2651,17 @@ inline auto https___w3id_org_cwl_cwl::WorkflowInputParameter::toYaml() const -> 
 inline auto https___w3id_org_cwl_cwl::ExpressionTool::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::Process::toYaml());
     addYamlField(n, "id", toYaml(*id));
     addYamlField(n, "label", toYaml(*label));
     addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "inputs", toYaml(*inputs));
-    addYamlField(n, "outputs", toYaml(*outputs));
-    addYamlField(n, "requirements", toYaml(*requirements));
-    addYamlField(n, "hints", toYaml(*hints));
+    addYamlField(n, "inputs",
+convertListToMap(toYaml(*inputs), "id"));
+    addYamlField(n, "outputs",
+convertListToMap(toYaml(*outputs), "id"));
+    addYamlField(n, "requirements",
+convertListToMap(toYaml(*requirements), "class"));
+    addYamlField(n, "hints",
+convertListToMap(toYaml(*hints), "class"));
     addYamlField(n, "cwlVersion", toYaml(*cwlVersion));
     addYamlField(n, "intent", toYaml(*intent));
     addYamlField(n, "class", toYaml(*class_));
@@ -2882,12 +2672,6 @@ inline auto https___w3id_org_cwl_cwl::WorkflowOutputParameter::toYaml() const ->
     using ::toYaml;
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_cwl::OutputParameter::toYaml());
-    addYamlField(n, "label", toYaml(*label));
-    addYamlField(n, "secondaryFiles", toYaml(*secondaryFiles));
-    addYamlField(n, "streamable", toYaml(*streamable));
-    addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "id", toYaml(*id));
-    addYamlField(n, "format", toYaml(*format));
     addYamlField(n, "outputSource", toYaml(*outputSource));
     addYamlField(n, "linkMerge", toYaml(*linkMerge));
     addYamlField(n, "pickValue", toYaml(*pickValue));
@@ -2910,13 +2694,6 @@ inline auto https___w3id_org_cwl_cwl::WorkflowStepInput::toYaml() const -> YAML:
     n = mergeYaml(n, https___w3id_org_cwl_cwl::Sink::toYaml());
     n = mergeYaml(n, https___w3id_org_cwl_cwl::LoadContents::toYaml());
     n = mergeYaml(n, https___w3id_org_cwl_cwl::Labeled::toYaml());
-    addYamlField(n, "id", toYaml(*id));
-    addYamlField(n, "source", toYaml(*source));
-    addYamlField(n, "linkMerge", toYaml(*linkMerge));
-    addYamlField(n, "pickValue", toYaml(*pickValue));
-    addYamlField(n, "loadContents", toYaml(*loadContents));
-    addYamlField(n, "loadListing", toYaml(*loadListing));
-    addYamlField(n, "label", toYaml(*label));
     addYamlField(n, "default", toYaml(*default_));
     addYamlField(n, "valueFrom", toYaml(*valueFrom));
     return n;
@@ -2925,7 +2702,6 @@ inline auto https___w3id_org_cwl_cwl::WorkflowStepOutput::toYaml() const -> YAML
     using ::toYaml;
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_cwl::Identified::toYaml());
-    addYamlField(n, "id", toYaml(*id));
     return n;
 }
 inline auto https___w3id_org_cwl_cwl::WorkflowStep::toYaml() const -> YAML::Node {
@@ -2934,13 +2710,13 @@ inline auto https___w3id_org_cwl_cwl::WorkflowStep::toYaml() const -> YAML::Node
     n = mergeYaml(n, https___w3id_org_cwl_cwl::Identified::toYaml());
     n = mergeYaml(n, https___w3id_org_cwl_cwl::Labeled::toYaml());
     n = mergeYaml(n, https___w3id_org_cwl_salad::Documented::toYaml());
-    addYamlField(n, "id", toYaml(*id));
-    addYamlField(n, "label", toYaml(*label));
-    addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "in", toYaml(*in));
+    addYamlField(n, "in",
+convertListToMap(toYaml(*in), "id"));
     addYamlField(n, "out", toYaml(*out));
-    addYamlField(n, "requirements", toYaml(*requirements));
-    addYamlField(n, "hints", toYaml(*hints));
+    addYamlField(n, "requirements",
+convertListToMap(toYaml(*requirements), "class"));
+    addYamlField(n, "hints",
+convertListToMap(toYaml(*hints), "class"));
     addYamlField(n, "run", toYaml(*run));
     addYamlField(n, "when", toYaml(*when));
     addYamlField(n, "scatter", toYaml(*scatter));
@@ -2950,18 +2726,22 @@ inline auto https___w3id_org_cwl_cwl::WorkflowStep::toYaml() const -> YAML::Node
 inline auto https___w3id_org_cwl_cwl::Workflow::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::Process::toYaml());
     addYamlField(n, "id", toYaml(*id));
     addYamlField(n, "label", toYaml(*label));
     addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "inputs", toYaml(*inputs));
-    addYamlField(n, "outputs", toYaml(*outputs));
-    addYamlField(n, "requirements", toYaml(*requirements));
-    addYamlField(n, "hints", toYaml(*hints));
+    addYamlField(n, "inputs",
+convertListToMap(toYaml(*inputs), "id"));
+    addYamlField(n, "outputs",
+convertListToMap(toYaml(*outputs), "id"));
+    addYamlField(n, "requirements",
+convertListToMap(toYaml(*requirements), "class"));
+    addYamlField(n, "hints",
+convertListToMap(toYaml(*hints), "class"));
     addYamlField(n, "cwlVersion", toYaml(*cwlVersion));
     addYamlField(n, "intent", toYaml(*intent));
     addYamlField(n, "class", toYaml(*class_));
-    addYamlField(n, "steps", toYaml(*steps));
+    addYamlField(n, "steps",
+convertListToMap(toYaml(*steps), "id"));
     return n;
 }
 inline auto https___w3id_org_cwl_cwl::SubworkflowFeatureRequirement::toYaml() const -> YAML::Node {
@@ -2996,15 +2776,6 @@ inline auto https___w3id_org_cwl_cwl::OperationInputParameter::toYaml() const ->
     using ::toYaml;
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_cwl::InputParameter::toYaml());
-    addYamlField(n, "label", toYaml(*label));
-    addYamlField(n, "secondaryFiles", toYaml(*secondaryFiles));
-    addYamlField(n, "streamable", toYaml(*streamable));
-    addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "id", toYaml(*id));
-    addYamlField(n, "format", toYaml(*format));
-    addYamlField(n, "loadContents", toYaml(*loadContents));
-    addYamlField(n, "loadListing", toYaml(*loadListing));
-    addYamlField(n, "default", toYaml(*default_));
     addYamlField(n, "type", toYaml(*type));
     return n;
 }
@@ -3012,26 +2783,23 @@ inline auto https___w3id_org_cwl_cwl::OperationOutputParameter::toYaml() const -
     using ::toYaml;
     auto n = YAML::Node{};
     n = mergeYaml(n, https___w3id_org_cwl_cwl::OutputParameter::toYaml());
-    addYamlField(n, "label", toYaml(*label));
-    addYamlField(n, "secondaryFiles", toYaml(*secondaryFiles));
-    addYamlField(n, "streamable", toYaml(*streamable));
-    addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "id", toYaml(*id));
-    addYamlField(n, "format", toYaml(*format));
     addYamlField(n, "type", toYaml(*type));
     return n;
 }
 inline auto https___w3id_org_cwl_cwl::Operation::toYaml() const -> YAML::Node {
     using ::toYaml;
     auto n = YAML::Node{};
-    n = mergeYaml(n, https___w3id_org_cwl_cwl::Process::toYaml());
     addYamlField(n, "id", toYaml(*id));
     addYamlField(n, "label", toYaml(*label));
     addYamlField(n, "doc", toYaml(*doc));
-    addYamlField(n, "inputs", toYaml(*inputs));
-    addYamlField(n, "outputs", toYaml(*outputs));
-    addYamlField(n, "requirements", toYaml(*requirements));
-    addYamlField(n, "hints", toYaml(*hints));
+    addYamlField(n, "inputs",
+convertListToMap(toYaml(*inputs), "id"));
+    addYamlField(n, "outputs",
+convertListToMap(toYaml(*outputs), "id"));
+    addYamlField(n, "requirements",
+convertListToMap(toYaml(*requirements), "class"));
+    addYamlField(n, "hints",
+convertListToMap(toYaml(*hints), "class"));
     addYamlField(n, "cwlVersion", toYaml(*cwlVersion));
     addYamlField(n, "intent", toYaml(*intent));
     addYamlField(n, "class", toYaml(*class_));
