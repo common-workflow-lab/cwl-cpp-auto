@@ -35,8 +35,8 @@ regen_parser: cwl_v1_*.h
 
 ## tests        : compile and run the tests
 tests: FORCE cwl_output_example
-	@result="$(shell ./cwl_output_example | md5sum)" ; \
-	expected="917791e054e1703bd42b181154b885d7  -" ;\
+	@result="$(shell ./cwl_output_example | md5sum -b)" ; \
+	expected="$(shell cat expected_cwl.cwl | md5sum -b)" ; \
 	if [ "$$result" = "$$expected" ] ; \
 		then echo test passed ; \
 	else echo test failed $$result != $$expected; exit 1; \
