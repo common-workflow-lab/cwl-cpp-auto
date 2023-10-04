@@ -20,6 +20,7 @@ help: Makefile
 	@sed -n 's/^##//p' $<
 
 LDLIBS += -lyaml-cpp
+CXXFLAGS += -Werror -Wextra -Wall
 
 cwl_v1_2.h: FORCE
 	schema-salad-tool --codegen cpp \
