@@ -3,17 +3,32 @@
 #include <iostream>
 
 /**
- * This test program creates a new CWL description from C++ classes.
+ * This test program creates loads and prints a CWL description.
  *
- * It should print a valid CWL description to stdout.
+ * It assumes that printing to stdout works (see cwl_output_example).
+ * It loads a CWL description from a file and populates C++ classes.
  */
+
 
 // using shortened cwl:: namespace instead of https___w3id_org_cwl_cwl
 namespace cwl = https___w3id_org_cwl_cwl;
 
-int main() {
-    // declaring information about this tool in general
+int main(int argc, char** argv) {
+    if (argc != 2) return 1;
+
+    auto yaml = YAML::LoadFile(argv[1]);
     auto tool = cwl::CommandLineTool{};
+    fromYaml(yaml, tool);
+
+    auto y = toYaml(tool);
+
+    YAML::Emitter out;
+    out << y;
+    std::cout << out.c_str() << "\n";
+
+    return 0;
+#if 0
+    // declaring information about this tool in general
     tool.cwlVersion = cwl::CWLVersion::v1_2;
     tool.id         = "Some id";
     tool.label      = "some label";
@@ -110,4 +125,5 @@ int main() {
     YAML::Emitter out;
     out << y;
     std::cout << out.c_str() << "\n";
+#endif
 }

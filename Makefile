@@ -28,18 +28,24 @@ cwl_v1_2.h: FORCE
 
 ## clean        : clean up the build
 clean: FORCE
-	rm -f cwl_output_example
+	rm -f cwl_output_example cwl_input_example output_cwl.cwl
 
 ## regen_parser : regenerate the CWL v1.2 parser
 regen_parser: cwl_v1_*.h
 
 ## tests        : compile and run the tests
-tests: FORCE cwl_output_example
-	@result="$(shell ./cwl_output_example | md5sum -b)" ; \
+tests: FORCE cwl_output_example cwl_input_example
+	@result_output="$(shell ./cwl_output_example | md5sum -b)" ; \
+	result_input="$(shell ./cwl_input_example expected_cwl.cwl | md5sum -b)" ; \
 	expected="$(shell cat expected_cwl.cwl | md5sum -b)" ; \
-	if [ "$$result" = "$$expected" ] ; \
-		then echo test passed ; \
-	else echo test failed $$result != $$expected; exit 1; \
+	if [ "$$result_output" = "$$expected" ] ; then \
+		if [ "$$result_input" = "$$expected" ] ; then \
+			echo test passed ; \
+		else \
+			echo test failed cwl_input_example $$result_input != $$expected; exit 1; \
+		fi \
+	else \
+		echo test failed cwl_output_example $$result_output != $$expected; exit 1; \
 	fi
 FORCE:
 
