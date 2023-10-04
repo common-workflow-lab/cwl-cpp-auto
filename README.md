@@ -12,3 +12,4 @@ The [cwl_v1.2.h](cwl_v1.2.h) header was generated using schema salad code genera
 It is a single header and can be copied into your own project for any usage.
 
 The usage can be seen in the [cwl_output_example.cpp](cwl_output_example.cpp) file, which show cases on how to describe your tools.
+Another short example of loading a CWL description file an be seen in [cwl_input_example.cpp](cwl_input_example.cpp).
