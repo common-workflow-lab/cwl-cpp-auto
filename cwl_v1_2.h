@@ -168,7 +168,7 @@ class heap_object {
 
 public:
     using value_t = T;
-    heap_object() = default;
+    heap_object() noexcept(false) = default;
     heap_object(heap_object const& oth) {
         *data = *oth;
     }
@@ -1410,7 +1410,7 @@ struct Documented {
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     virtual ~Documented() = 0;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1419,8 +1419,9 @@ struct RecordField
     : https___w3id_org_cwl_salad::Documented {
     heap_object<std::string> name;
     heap_object<std::variant<std::variant<bool, int32_t, int64_t, float, double, std::string>, RecordSchema, EnumSchema, ArraySchema, std::string, std::vector<std::variant<std::variant<bool, int32_t, int64_t, float, double, std::string>, RecordSchema, EnumSchema, ArraySchema, std::string>>>> type;
+    ~RecordField() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -1428,8 +1429,9 @@ namespace https___w3id_org_cwl_salad {
 struct RecordSchema {
     heap_object<std::variant<std::monostate, std::vector<RecordField>>> fields;
     heap_object<RecordSchema_type_Record_name> type;
+    virtual ~RecordSchema() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1438,8 +1440,9 @@ struct EnumSchema {
     heap_object<std::variant<std::monostate, std::string>> name;
     heap_object<std::vector<std::string>> symbols;
     heap_object<EnumSchema_type_Enum_name> type;
+    virtual ~EnumSchema() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1447,8 +1450,9 @@ namespace https___w3id_org_cwl_salad {
 struct ArraySchema {
     heap_object<std::variant<std::variant<bool, int32_t, int64_t, float, double, std::string>, RecordSchema, EnumSchema, ArraySchema, std::string, std::vector<std::variant<std::variant<bool, int32_t, int64_t, float, double, std::string>, RecordSchema, EnumSchema, ArraySchema, std::string>>>> items;
     heap_object<ArraySchema_type_Array_name> type;
+    virtual ~ArraySchema() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1466,8 +1470,9 @@ struct File {
     heap_object<std::variant<std::monostate, std::vector<std::variant<File, Directory>>>> secondaryFiles;
     heap_object<std::variant<std::monostate, std::string>> format;
     heap_object<std::variant<std::monostate, std::string>> contents;
+    virtual ~File() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1478,8 +1483,9 @@ struct Directory {
     heap_object<std::variant<std::monostate, std::string>> path;
     heap_object<std::variant<std::monostate, std::string>> basename;
     heap_object<std::variant<std::monostate, std::vector<std::variant<File, Directory>>>> listing;
+    virtual ~Directory() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1488,7 +1494,7 @@ struct Labeled {
     heap_object<std::variant<std::monostate, std::string>> label;
     virtual ~Labeled() = 0;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1497,7 +1503,7 @@ struct Identified {
     heap_object<std::variant<std::monostate, std::string>> id;
     virtual ~Identified() = 0;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1507,7 +1513,7 @@ struct LoadContents {
     heap_object<std::variant<std::monostate, LoadListingEnum>> loadListing;
     virtual ~LoadContents() = 0;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1518,7 +1524,7 @@ struct FieldBase
     heap_object<std::variant<std::monostate, bool>> streamable;
     virtual ~FieldBase() = 0;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -1527,7 +1533,7 @@ struct InputFormat {
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>, Expression>> format;
     virtual ~InputFormat() = 0;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1536,7 +1542,7 @@ struct OutputFormat {
     heap_object<std::variant<std::monostate, std::string, Expression>> format;
     virtual ~OutputFormat() = 0;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1547,15 +1553,16 @@ struct Parameter
     , https___w3id_org_cwl_cwl::Identified {
     virtual ~Parameter() = 0;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
 struct InputBinding {
     heap_object<std::variant<std::monostate, bool>> loadContents;
+    virtual ~InputBinding() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1566,7 +1573,7 @@ struct IOSchema
     heap_object<std::variant<std::monostate, std::string>> name;
     virtual ~IOSchema() = 0;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -1575,7 +1582,7 @@ struct InputSchema
     : https___w3id_org_cwl_cwl::IOSchema {
     virtual ~InputSchema() = 0;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -1584,7 +1591,7 @@ struct OutputSchema
     : https___w3id_org_cwl_cwl::IOSchema {
     virtual ~OutputSchema() = 0;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -1599,8 +1606,9 @@ struct InputRecordField {
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>, Expression>> format;
     heap_object<std::variant<std::monostate, bool>> loadContents;
     heap_object<std::variant<std::monostate, LoadListingEnum>> loadListing;
+    virtual ~InputRecordField() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1611,8 +1619,9 @@ struct InputRecordSchema {
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, std::string>> name;
+    virtual ~InputRecordSchema() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1620,8 +1629,9 @@ namespace https___w3id_org_cwl_cwl {
 struct InputEnumSchema
     : https___w3id_org_cwl_salad::EnumSchema
     , https___w3id_org_cwl_cwl::InputSchema {
+    ~InputEnumSchema() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -1632,8 +1642,9 @@ struct InputArraySchema {
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, std::string>> name;
+    virtual ~InputArraySchema() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1646,8 +1657,9 @@ struct OutputRecordField {
     heap_object<std::variant<std::monostate, SecondaryFileSchema, std::vector<SecondaryFileSchema>>> secondaryFiles;
     heap_object<std::variant<std::monostate, bool>> streamable;
     heap_object<std::variant<std::monostate, std::string, Expression>> format;
+    virtual ~OutputRecordField() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1658,8 +1670,9 @@ struct OutputRecordSchema {
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, std::string>> name;
+    virtual ~OutputRecordSchema() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1667,8 +1680,9 @@ namespace https___w3id_org_cwl_cwl {
 struct OutputEnumSchema
     : https___w3id_org_cwl_salad::EnumSchema
     , https___w3id_org_cwl_cwl::OutputSchema {
+    ~OutputEnumSchema() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -1679,8 +1693,9 @@ struct OutputArraySchema {
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, std::string>> name;
+    virtual ~OutputArraySchema() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1692,7 +1707,7 @@ struct InputParameter
     heap_object<std::variant<std::monostate, File, Directory, std::any>> default_;
     virtual ~InputParameter() = 0;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -1702,7 +1717,7 @@ struct OutputParameter
     , https___w3id_org_cwl_cwl::OutputFormat {
     virtual ~OutputParameter() = 0;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -1710,7 +1725,7 @@ namespace https___w3id_org_cwl_cwl {
 struct ProcessRequirement {
     virtual ~ProcessRequirement() = 0;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1727,7 +1742,7 @@ struct Process
     heap_object<std::variant<std::monostate, std::vector<std::string>>> intent;
     virtual ~Process() = 0;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -1736,8 +1751,9 @@ struct InlineJavascriptRequirement
     : https___w3id_org_cwl_cwl::ProcessRequirement {
     heap_object<InlineJavascriptRequirement_class_InlineJavascriptRequirement_class> class_;
     heap_object<std::variant<std::monostate, std::vector<std::string>>> expressionLib;
+    ~InlineJavascriptRequirement() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -1745,7 +1761,7 @@ namespace https___w3id_org_cwl_cwl {
 struct CommandInputSchema {
     virtual ~CommandInputSchema() = 0;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1754,8 +1770,9 @@ struct SchemaDefRequirement
     : https___w3id_org_cwl_cwl::ProcessRequirement {
     heap_object<SchemaDefRequirement_class_SchemaDefRequirement_class> class_;
     heap_object<std::vector<std::variant<CommandInputRecordSchema, CommandInputEnumSchema, CommandInputArraySchema>>> types;
+    ~SchemaDefRequirement() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -1763,8 +1780,9 @@ namespace https___w3id_org_cwl_cwl {
 struct SecondaryFileSchema {
     heap_object<std::variant<std::string, Expression>> pattern;
     heap_object<std::variant<std::monostate, bool, Expression>> required;
+    virtual ~SecondaryFileSchema() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1773,8 +1791,9 @@ struct LoadListingRequirement
     : https___w3id_org_cwl_cwl::ProcessRequirement {
     heap_object<LoadListingRequirement_class_LoadListingRequirement_class> class_;
     heap_object<std::variant<std::monostate, LoadListingEnum>> loadListing;
+    ~LoadListingRequirement() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -1782,8 +1801,9 @@ namespace https___w3id_org_cwl_cwl {
 struct EnvironmentDef {
     heap_object<std::string> envName;
     heap_object<std::variant<std::string, Expression>> envValue;
+    virtual ~EnvironmentDef() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1796,8 +1816,9 @@ struct CommandLineBinding
     heap_object<std::variant<std::monostate, std::string>> itemSeparator;
     heap_object<std::variant<std::monostate, std::string, Expression>> valueFrom;
     heap_object<std::variant<std::monostate, bool>> shellQuote;
+    ~CommandLineBinding() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -1806,16 +1827,18 @@ struct CommandOutputBinding
     : https___w3id_org_cwl_cwl::LoadContents {
     heap_object<std::variant<std::monostate, std::string, Expression, std::vector<std::string>>> glob;
     heap_object<std::variant<std::monostate, Expression>> outputEval;
+    ~CommandOutputBinding() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
 struct CommandLineBindable {
     heap_object<std::variant<std::monostate, CommandLineBinding>> inputBinding;
+    virtual ~CommandLineBindable() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1831,8 +1854,9 @@ struct CommandInputRecordField {
     heap_object<std::variant<std::monostate, bool>> loadContents;
     heap_object<std::variant<std::monostate, LoadListingEnum>> loadListing;
     heap_object<std::variant<std::monostate, CommandLineBinding>> inputBinding;
+    virtual ~CommandInputRecordField() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1844,8 +1868,9 @@ struct CommandInputRecordSchema {
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, std::string>> name;
     heap_object<std::variant<std::monostate, CommandLineBinding>> inputBinding;
+    virtual ~CommandInputRecordSchema() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1857,8 +1882,9 @@ struct CommandInputEnumSchema {
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, CommandLineBinding>> inputBinding;
+    virtual ~CommandInputEnumSchema() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1870,8 +1896,9 @@ struct CommandInputArraySchema {
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, std::string>> name;
     heap_object<std::variant<std::monostate, CommandLineBinding>> inputBinding;
+    virtual ~CommandInputArraySchema() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1885,8 +1912,9 @@ struct CommandOutputRecordField {
     heap_object<std::variant<std::monostate, bool>> streamable;
     heap_object<std::variant<std::monostate, std::string, Expression>> format;
     heap_object<std::variant<std::monostate, CommandOutputBinding>> outputBinding;
+    virtual ~CommandOutputRecordField() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1897,8 +1925,9 @@ struct CommandOutputRecordSchema {
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, std::string>> name;
+    virtual ~CommandOutputRecordSchema() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1909,8 +1938,9 @@ struct CommandOutputEnumSchema {
     heap_object<https___w3id_org_cwl_salad::EnumSchema_type_Enum_name> type;
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
+    virtual ~CommandOutputEnumSchema() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1921,8 +1951,9 @@ struct CommandOutputArraySchema {
     heap_object<std::variant<std::monostate, std::string>> label;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     heap_object<std::variant<std::monostate, std::string>> name;
+    virtual ~CommandOutputArraySchema() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1931,8 +1962,9 @@ struct CommandInputParameter
     : https___w3id_org_cwl_cwl::InputParameter {
     heap_object<std::variant<CWLType, stdin_, CommandInputRecordSchema, CommandInputEnumSchema, CommandInputArraySchema, std::string, std::vector<std::variant<CWLType, CommandInputRecordSchema, CommandInputEnumSchema, CommandInputArraySchema, std::string>>>> type;
     heap_object<std::variant<std::monostate, CommandLineBinding>> inputBinding;
+    ~CommandInputParameter() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -1941,8 +1973,9 @@ struct CommandOutputParameter
     : https___w3id_org_cwl_cwl::OutputParameter {
     heap_object<std::variant<CWLType, stdout_, stderr_, CommandOutputRecordSchema, CommandOutputEnumSchema, CommandOutputArraySchema, std::string, std::vector<std::variant<CWLType, CommandOutputRecordSchema, CommandOutputEnumSchema, CommandOutputArraySchema, std::string>>>> type;
     heap_object<std::variant<std::monostate, CommandOutputBinding>> outputBinding;
+    ~CommandOutputParameter() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -1966,8 +1999,9 @@ struct CommandLineTool {
     heap_object<std::variant<std::monostate, std::vector<int32_t>>> successCodes;
     heap_object<std::variant<std::monostate, std::vector<int32_t>>> temporaryFailCodes;
     heap_object<std::variant<std::monostate, std::vector<int32_t>>> permanentFailCodes;
+    virtual ~CommandLineTool() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -1981,8 +2015,9 @@ struct DockerRequirement
     heap_object<std::variant<std::monostate, std::string>> dockerImport;
     heap_object<std::variant<std::monostate, std::string>> dockerImageId;
     heap_object<std::variant<std::monostate, std::string>> dockerOutputDirectory;
+    ~DockerRequirement() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -1991,8 +2026,9 @@ struct SoftwareRequirement
     : https___w3id_org_cwl_cwl::ProcessRequirement {
     heap_object<SoftwareRequirement_class_SoftwareRequirement_class> class_;
     heap_object<std::vector<SoftwarePackage>> packages;
+    ~SoftwareRequirement() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2001,8 +2037,9 @@ struct SoftwarePackage {
     heap_object<std::string> package;
     heap_object<std::variant<std::monostate, std::vector<std::string>>> version;
     heap_object<std::variant<std::monostate, std::vector<std::string>>> specs;
+    virtual ~SoftwarePackage() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -2011,8 +2048,9 @@ struct Dirent {
     heap_object<std::variant<std::monostate, std::string, Expression>> entryname;
     heap_object<std::variant<std::string, Expression>> entry;
     heap_object<std::variant<std::monostate, bool>> writable;
+    virtual ~Dirent() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -2021,8 +2059,9 @@ struct InitialWorkDirRequirement
     : https___w3id_org_cwl_cwl::ProcessRequirement {
     heap_object<InitialWorkDirRequirement_class_InitialWorkDirRequirement_class> class_;
     heap_object<std::variant<Expression, std::vector<std::variant<std::monostate, Dirent, Expression, File, Directory, std::vector<std::variant<File, Directory>>>>>> listing;
+    ~InitialWorkDirRequirement() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2031,8 +2070,9 @@ struct EnvVarRequirement
     : https___w3id_org_cwl_cwl::ProcessRequirement {
     heap_object<EnvVarRequirement_class_EnvVarRequirement_class> class_;
     heap_object<std::vector<EnvironmentDef>> envDef;
+    ~EnvVarRequirement() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2040,8 +2080,9 @@ namespace https___w3id_org_cwl_cwl {
 struct ShellCommandRequirement
     : https___w3id_org_cwl_cwl::ProcessRequirement {
     heap_object<ShellCommandRequirement_class_ShellCommandRequirement_class> class_;
+    ~ShellCommandRequirement() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2057,8 +2098,9 @@ struct ResourceRequirement
     heap_object<std::variant<std::monostate, int32_t, int64_t, float, Expression>> tmpdirMax;
     heap_object<std::variant<std::monostate, int32_t, int64_t, float, Expression>> outdirMin;
     heap_object<std::variant<std::monostate, int32_t, int64_t, float, Expression>> outdirMax;
+    ~ResourceRequirement() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2067,8 +2109,9 @@ struct WorkReuse
     : https___w3id_org_cwl_cwl::ProcessRequirement {
     heap_object<WorkReuse_class_WorkReuse_class> class_;
     heap_object<std::variant<bool, Expression>> enableReuse;
+    ~WorkReuse() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2077,8 +2120,9 @@ struct NetworkAccess
     : https___w3id_org_cwl_cwl::ProcessRequirement {
     heap_object<NetworkAccess_class_NetworkAccess_class> class_;
     heap_object<std::variant<bool, Expression>> networkAccess;
+    ~NetworkAccess() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2087,8 +2131,9 @@ struct InplaceUpdateRequirement
     : https___w3id_org_cwl_cwl::ProcessRequirement {
     heap_object<InplaceUpdateRequirement_class_InplaceUpdateRequirement_class> class_;
     heap_object<bool> inplaceUpdate;
+    ~InplaceUpdateRequirement() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2097,8 +2142,9 @@ struct ToolTimeLimit
     : https___w3id_org_cwl_cwl::ProcessRequirement {
     heap_object<ToolTimeLimit_class_ToolTimeLimit_class> class_;
     heap_object<std::variant<int32_t, int64_t, Expression>> timelimit;
+    ~ToolTimeLimit() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2106,8 +2152,9 @@ namespace https___w3id_org_cwl_cwl {
 struct ExpressionToolOutputParameter
     : https___w3id_org_cwl_cwl::OutputParameter {
     heap_object<std::variant<CWLType, OutputRecordSchema, OutputEnumSchema, OutputArraySchema, std::string, std::vector<std::variant<CWLType, OutputRecordSchema, OutputEnumSchema, OutputArraySchema, std::string>>>> type;
+    ~ExpressionToolOutputParameter() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2116,8 +2163,9 @@ struct WorkflowInputParameter
     : https___w3id_org_cwl_cwl::InputParameter {
     heap_object<std::variant<CWLType, InputRecordSchema, InputEnumSchema, InputArraySchema, std::string, std::vector<std::variant<CWLType, InputRecordSchema, InputEnumSchema, InputArraySchema, std::string>>>> type;
     heap_object<std::variant<std::monostate, InputBinding>> inputBinding;
+    ~WorkflowInputParameter() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2134,8 +2182,9 @@ struct ExpressionTool {
     heap_object<std::variant<std::monostate, std::vector<std::string>>> intent;
     heap_object<ExpressionTool_class_ExpressionTool_class> class_;
     heap_object<Expression> expression;
+    virtual ~ExpressionTool() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -2146,8 +2195,9 @@ struct WorkflowOutputParameter
     heap_object<std::variant<std::monostate, LinkMergeMethod>> linkMerge;
     heap_object<std::variant<std::monostate, PickValueMethod>> pickValue;
     heap_object<std::variant<CWLType, OutputRecordSchema, OutputEnumSchema, OutputArraySchema, std::string, std::vector<std::variant<CWLType, OutputRecordSchema, OutputEnumSchema, OutputArraySchema, std::string>>>> type;
+    ~WorkflowOutputParameter() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2158,7 +2208,7 @@ struct Sink {
     heap_object<std::variant<std::monostate, PickValueMethod>> pickValue;
     virtual ~Sink() = 0;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -2170,16 +2220,18 @@ struct WorkflowStepInput
     , https___w3id_org_cwl_cwl::Labeled {
     heap_object<std::variant<std::monostate, File, Directory, std::any>> default_;
     heap_object<std::variant<std::monostate, std::string, Expression>> valueFrom;
+    ~WorkflowStepInput() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
 namespace https___w3id_org_cwl_cwl {
 struct WorkflowStepOutput
     : https___w3id_org_cwl_cwl::Identified {
+    ~WorkflowStepOutput() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2196,8 +2248,9 @@ struct WorkflowStep
     heap_object<std::variant<std::monostate, Expression>> when;
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> scatter;
     heap_object<std::variant<std::monostate, ScatterMethod>> scatterMethod;
+    ~WorkflowStep() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2214,8 +2267,9 @@ struct Workflow {
     heap_object<std::variant<std::monostate, std::vector<std::string>>> intent;
     heap_object<Workflow_class_Workflow_class> class_;
     heap_object<std::vector<WorkflowStep>> steps;
+    virtual ~Workflow() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
@@ -2223,8 +2277,9 @@ namespace https___w3id_org_cwl_cwl {
 struct SubworkflowFeatureRequirement
     : https___w3id_org_cwl_cwl::ProcessRequirement {
     heap_object<SubworkflowFeatureRequirement_class_SubworkflowFeatureRequirement_class> class_;
+    ~SubworkflowFeatureRequirement() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2232,8 +2287,9 @@ namespace https___w3id_org_cwl_cwl {
 struct ScatterFeatureRequirement
     : https___w3id_org_cwl_cwl::ProcessRequirement {
     heap_object<ScatterFeatureRequirement_class_ScatterFeatureRequirement_class> class_;
+    ~ScatterFeatureRequirement() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2241,8 +2297,9 @@ namespace https___w3id_org_cwl_cwl {
 struct MultipleInputFeatureRequirement
     : https___w3id_org_cwl_cwl::ProcessRequirement {
     heap_object<MultipleInputFeatureRequirement_class_MultipleInputFeatureRequirement_class> class_;
+    ~MultipleInputFeatureRequirement() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2250,8 +2307,9 @@ namespace https___w3id_org_cwl_cwl {
 struct StepInputExpressionRequirement
     : https___w3id_org_cwl_cwl::ProcessRequirement {
     heap_object<StepInputExpressionRequirement_class_StepInputExpressionRequirement_class> class_;
+    ~StepInputExpressionRequirement() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2259,8 +2317,9 @@ namespace https___w3id_org_cwl_cwl {
 struct OperationInputParameter
     : https___w3id_org_cwl_cwl::InputParameter {
     heap_object<std::variant<CWLType, InputRecordSchema, InputEnumSchema, InputArraySchema, std::string, std::vector<std::variant<CWLType, InputRecordSchema, InputEnumSchema, InputArraySchema, std::string>>>> type;
+    ~OperationInputParameter() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2268,8 +2327,9 @@ namespace https___w3id_org_cwl_cwl {
 struct OperationOutputParameter
     : https___w3id_org_cwl_cwl::OutputParameter {
     heap_object<std::variant<CWLType, OutputRecordSchema, OutputEnumSchema, OutputArraySchema, std::string, std::vector<std::variant<CWLType, OutputRecordSchema, OutputEnumSchema, OutputArraySchema, std::string>>>> type;
+    ~OperationOutputParameter() override = default;
     auto toYaml() const -> YAML::Node override;
-    void fromYaml(YAML::Node const& n)  override;
+    void fromYaml(YAML::Node const& n) override;
 };
 }
 
@@ -2285,8 +2345,9 @@ struct Operation {
     heap_object<std::variant<std::monostate, CWLVersion>> cwlVersion;
     heap_object<std::variant<std::monostate, std::vector<std::string>>> intent;
     heap_object<Operation_class_Operation_class> class_;
+    virtual ~Operation() = default;
     virtual auto toYaml() const -> YAML::Node;
-    virtual void fromYaml(YAML::Node const& n) ;
+    virtual void fromYaml(YAML::Node const& n);
 };
 }
 
