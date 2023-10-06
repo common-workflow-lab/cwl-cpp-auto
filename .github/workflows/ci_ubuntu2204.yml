@@ -1,0 +1,93 @@
+name: Ubuntu 22.04
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ubuntu2204-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'push' }}
+
+env:
+  TZ: Europe/Berlin
+
+defaults:
+  run:
+    shell: bash -Eexuo pipefail {0}
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - name: "gcc12 (c++17)"
+            compiler: "gcc-12"
+            build_type: Release
+            cpp: 17
+
+          - name: "gcc11 (c++17)"
+            compiler: "gcc-11"
+            build_type: Release
+            cpp: 17
+
+          - name: "gcc10 (c++17)"
+            compiler: "gcc-10"
+            build_type: Release
+            cpp: 17
+
+          - name: "clang14 (c++17)"
+            compiler: "clang-14"
+            build_type: Release
+            cpp: 17
+
+          - name: "clang17 (c++23)"
+            compiler: "clang-17"
+            build_type: Release
+            cpp: 23
+
+          - name: "gcc12 (c++20)"
+            compiler: "gcc-12"
+            build_type: Release
+            cpp: 20
+
+          - name: "gcc11 (c++20)"
+            compiler: "gcc-11"
+            build_type: Release
+            cpp: 20
+
+          - name: "gcc10 (c++20)"
+            compiler: "gcc-10"
+            build_type: Release
+            cpp: 20
+
+          - name: "gcc12 (c++23)"
+            compiler: "gcc-12"
+            build_type: Release
+            cpp: 23
+
+    steps:
+      - name: Checkout cwl-cpp-auto
+        uses: actions/checkout@v4
+        with:
+          path: repo
+          fetch-depth: 2
+
+      - name: Setup compiler
+        uses: seqan/actions/setup-compiler@main
+        with:
+          compiler: ${{ matrix.compiler }}
+
+      - name: Install dependencies
+        run: sudo apt-get install libyaml-cpp-dev
+
+      - name: Build and Run tests
+        run: |
+          cd repo
+          make tests CXXFLAGS=-std=c++${{ matrix.cpp }}
