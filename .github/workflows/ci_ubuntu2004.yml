@@ -1,0 +1,53 @@
+name: Ubuntu 20.04
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ubuntu2004-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'push' }}
+
+env:
+  TZ: Europe/Berlin
+
+defaults:
+  run:
+    shell: bash -Eexuo pipefail {0}
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-20.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - name: "clang10 (c++17)"
+            compiler: "clang-10"
+            build_type: Release
+            cpp: 17
+
+    steps:
+      - name: Checkout cwl-cpp-auto
+        uses: actions/checkout@v4
+        with:
+          path: repo
+          fetch-depth: 2
+
+      - name: Setup compiler
+        uses: seqan/actions/setup-compiler@main
+        with:
+          compiler: ${{ matrix.compiler }}
+
+      - name: Install dependencies
+        run: sudo apt-get install libyaml-cpp-dev
+
+      - name: Build and Run tests
+        run: |
+          cd repo
+          make tests CXXFLAGS=-std=c++${{ matrix.cpp }}
