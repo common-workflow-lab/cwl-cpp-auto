@@ -24,6 +24,8 @@ CXXFLAGS += -Werror -Wextra -Wall
 
 cwl_v1_2.h: FORCE
 	schema-salad-tool --codegen cpp \
+		--codegen-spdx-copyright-text "Copyright 2016-2023 CWL Project Contributors" \
+		--codegen-spdx-license-identifier "Apache-2.0" \
 		https://github.com/common-workflow-language/cwl-v1.2/raw/1.2.1_proposed/CommonWorkflowLanguage.yml \
 		> $@
 
