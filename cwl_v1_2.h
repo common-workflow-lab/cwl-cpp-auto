@@ -109,6 +109,8 @@ template <typename T> struct IsConstant : std::false_type {};
 template <typename T>
 auto toYaml(std::vector<T> const& v) -> YAML::Node;
 template <typename T>
+auto toYaml(std::map<std::string, T> const& v) -> YAML::Node;
+template <typename T>
 auto toYaml(T const& t) -> YAML::Node;
 template <typename ...Args>
 auto toYaml(std::variant<Args...> const& t) -> YAML::Node;
@@ -116,6 +118,8 @@ auto toYaml(std::variant<Args...> const& t) -> YAML::Node;
 // fwd declaring fromYaml
 template <typename T>
 void fromYaml(YAML::Node const& n, std::vector<T>& v);
+template <typename T>
+void fromYaml(YAML::Node const& n, std::map<std::string, T>& v);
 template <typename T>
 void fromYaml(YAML::Node const& n, T& t);
 template <typename ...Args>
@@ -159,6 +163,17 @@ struct DetectAndExtractFromYaml<std::vector<T>> {
         if (!n.IsDefined()) return std::nullopt;
         if (!n.IsSequence()) return std::nullopt;
         auto res = std::vector<T>{};
+        fromYaml(n, res);
+        return res;
+    }
+};
+
+template <typename T>
+struct DetectAndExtractFromYaml<std::map<std::string, T>> {
+    auto operator()(YAML::Node const& n) const -> std::optional<std::map<std::string, T>> {
+        if (!n.IsDefined()) return std::nullopt;
+        if (!n.IsMap()) return std::nullopt;
+        auto res = std::map<std::string, T>{};
         fromYaml(n, res);
         return res;
     }
@@ -345,7 +360,9 @@ inline auto toYaml(https___w3id_org_cwl_salad::PrimitiveType v) {
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_salad::PrimitiveType& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_salad::PrimitiveType> : std::true_type {};namespace https___w3id_org_cwl_salad {
+template <> struct IsConstant<https___w3id_org_cwl_salad::PrimitiveType> : std::true_type {};
+
+namespace https___w3id_org_cwl_salad {
 enum class Any : unsigned int {
     Any
 };
@@ -371,7 +388,9 @@ inline auto toYaml(https___w3id_org_cwl_salad::Any v) {
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_salad::Any& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_salad::Any> : std::true_type {};namespace https___w3id_org_cwl_salad {
+template <> struct IsConstant<https___w3id_org_cwl_salad::Any> : std::true_type {};
+
+namespace https___w3id_org_cwl_salad {
 enum class RecordSchema_type_Record_name : unsigned int {
     record
 };
@@ -397,7 +416,9 @@ inline auto toYaml(https___w3id_org_cwl_salad::RecordSchema_type_Record_name v) 
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_salad::RecordSchema_type_Record_name& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_salad::RecordSchema_type_Record_name> : std::true_type {};namespace https___w3id_org_cwl_salad {
+template <> struct IsConstant<https___w3id_org_cwl_salad::RecordSchema_type_Record_name> : std::true_type {};
+
+namespace https___w3id_org_cwl_salad {
 enum class EnumSchema_type_Enum_name : unsigned int {
     enum_
 };
@@ -423,7 +444,9 @@ inline auto toYaml(https___w3id_org_cwl_salad::EnumSchema_type_Enum_name v) {
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_salad::EnumSchema_type_Enum_name& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_salad::EnumSchema_type_Enum_name> : std::true_type {};namespace https___w3id_org_cwl_salad {
+template <> struct IsConstant<https___w3id_org_cwl_salad::EnumSchema_type_Enum_name> : std::true_type {};
+
+namespace https___w3id_org_cwl_salad {
 enum class ArraySchema_type_Array_name : unsigned int {
     array
 };
@@ -449,7 +472,9 @@ inline auto toYaml(https___w3id_org_cwl_salad::ArraySchema_type_Array_name v) {
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_salad::ArraySchema_type_Array_name& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_salad::ArraySchema_type_Array_name> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_salad::ArraySchema_type_Array_name> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class CWLVersion : unsigned int {
     draft_2,
     draft_3_dev1,
@@ -532,7 +557,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::CWLVersion v) {
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::CWLVersion& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::CWLVersion> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::CWLVersion> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class CWLType : unsigned int {
     null,
     boolean,
@@ -582,7 +609,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::CWLType v) {
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::CWLType& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::CWLType> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::CWLType> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class File_class_File_class : unsigned int {
     File
 };
@@ -608,7 +637,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::File_class_File_class v) {
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::File_class_File_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::File_class_File_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::File_class_File_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class Directory_class_Directory_class : unsigned int {
     Directory
 };
@@ -634,7 +665,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::Directory_class_Directory_class v) 
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::Directory_class_Directory_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::Directory_class_Directory_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::Directory_class_Directory_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class LoadListingEnum : unsigned int {
     no_listing,
     shallow_listing,
@@ -666,7 +699,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::LoadListingEnum v) {
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::LoadListingEnum& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::LoadListingEnum> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::LoadListingEnum> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class Expression : unsigned int {
     ExpressionPlaceholder
 };
@@ -692,7 +727,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::Expression v) {
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::Expression& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::Expression> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::Expression> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class InlineJavascriptRequirement_class_InlineJavascriptRequirement_class : unsigned int {
     InlineJavascriptRequirement
 };
@@ -718,7 +755,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::InlineJavascriptRequirement_class_I
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::InlineJavascriptRequirement_class_InlineJavascriptRequirement_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::InlineJavascriptRequirement_class_InlineJavascriptRequirement_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::InlineJavascriptRequirement_class_InlineJavascriptRequirement_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class SchemaDefRequirement_class_SchemaDefRequirement_class : unsigned int {
     SchemaDefRequirement
 };
@@ -744,7 +783,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::SchemaDefRequirement_class_SchemaDe
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::SchemaDefRequirement_class_SchemaDefRequirement_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::SchemaDefRequirement_class_SchemaDefRequirement_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::SchemaDefRequirement_class_SchemaDefRequirement_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class LoadListingRequirement_class_LoadListingRequirement_class : unsigned int {
     LoadListingRequirement
 };
@@ -770,7 +811,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::LoadListingRequirement_class_LoadLi
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::LoadListingRequirement_class_LoadListingRequirement_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::LoadListingRequirement_class_LoadListingRequirement_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::LoadListingRequirement_class_LoadListingRequirement_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class stdin_ : unsigned int {
     stdin_
 };
@@ -796,7 +839,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::stdin_ v) {
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::stdin_& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::stdin_> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::stdin_> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class stdout_ : unsigned int {
     stdout_
 };
@@ -822,7 +867,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::stdout_ v) {
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::stdout_& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::stdout_> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::stdout_> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class stderr_ : unsigned int {
     stderr_
 };
@@ -848,7 +895,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::stderr_ v) {
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::stderr_& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::stderr_> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::stderr_> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class CommandLineTool_class_CommandLineTool_class : unsigned int {
     CommandLineTool
 };
@@ -874,7 +923,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::CommandLineTool_class_CommandLineTo
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::CommandLineTool_class_CommandLineTool_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::CommandLineTool_class_CommandLineTool_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::CommandLineTool_class_CommandLineTool_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class DockerRequirement_class_DockerRequirement_class : unsigned int {
     DockerRequirement
 };
@@ -900,7 +951,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::DockerRequirement_class_DockerRequi
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::DockerRequirement_class_DockerRequirement_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::DockerRequirement_class_DockerRequirement_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::DockerRequirement_class_DockerRequirement_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class SoftwareRequirement_class_SoftwareRequirement_class : unsigned int {
     SoftwareRequirement
 };
@@ -926,7 +979,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::SoftwareRequirement_class_SoftwareR
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::SoftwareRequirement_class_SoftwareRequirement_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::SoftwareRequirement_class_SoftwareRequirement_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::SoftwareRequirement_class_SoftwareRequirement_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class InitialWorkDirRequirement_class_InitialWorkDirRequirement_class : unsigned int {
     InitialWorkDirRequirement
 };
@@ -952,7 +1007,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::InitialWorkDirRequirement_class_Ini
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::InitialWorkDirRequirement_class_InitialWorkDirRequirement_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::InitialWorkDirRequirement_class_InitialWorkDirRequirement_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::InitialWorkDirRequirement_class_InitialWorkDirRequirement_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class EnvVarRequirement_class_EnvVarRequirement_class : unsigned int {
     EnvVarRequirement
 };
@@ -978,7 +1035,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::EnvVarRequirement_class_EnvVarRequi
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::EnvVarRequirement_class_EnvVarRequirement_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::EnvVarRequirement_class_EnvVarRequirement_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::EnvVarRequirement_class_EnvVarRequirement_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class ShellCommandRequirement_class_ShellCommandRequirement_class : unsigned int {
     ShellCommandRequirement
 };
@@ -1004,7 +1063,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::ShellCommandRequirement_class_Shell
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::ShellCommandRequirement_class_ShellCommandRequirement_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::ShellCommandRequirement_class_ShellCommandRequirement_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::ShellCommandRequirement_class_ShellCommandRequirement_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class ResourceRequirement_class_ResourceRequirement_class : unsigned int {
     ResourceRequirement
 };
@@ -1030,7 +1091,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::ResourceRequirement_class_ResourceR
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::ResourceRequirement_class_ResourceRequirement_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::ResourceRequirement_class_ResourceRequirement_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::ResourceRequirement_class_ResourceRequirement_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class WorkReuse_class_WorkReuse_class : unsigned int {
     WorkReuse
 };
@@ -1056,7 +1119,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::WorkReuse_class_WorkReuse_class v) 
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::WorkReuse_class_WorkReuse_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::WorkReuse_class_WorkReuse_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::WorkReuse_class_WorkReuse_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class NetworkAccess_class_NetworkAccess_class : unsigned int {
     NetworkAccess
 };
@@ -1082,7 +1147,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::NetworkAccess_class_NetworkAccess_c
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::NetworkAccess_class_NetworkAccess_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::NetworkAccess_class_NetworkAccess_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::NetworkAccess_class_NetworkAccess_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class InplaceUpdateRequirement_class_InplaceUpdateRequirement_class : unsigned int {
     InplaceUpdateRequirement
 };
@@ -1108,7 +1175,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::InplaceUpdateRequirement_class_Inpl
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::InplaceUpdateRequirement_class_InplaceUpdateRequirement_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::InplaceUpdateRequirement_class_InplaceUpdateRequirement_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::InplaceUpdateRequirement_class_InplaceUpdateRequirement_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class ToolTimeLimit_class_ToolTimeLimit_class : unsigned int {
     ToolTimeLimit
 };
@@ -1134,7 +1203,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::ToolTimeLimit_class_ToolTimeLimit_c
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::ToolTimeLimit_class_ToolTimeLimit_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::ToolTimeLimit_class_ToolTimeLimit_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::ToolTimeLimit_class_ToolTimeLimit_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class ExpressionTool_class_ExpressionTool_class : unsigned int {
     ExpressionTool
 };
@@ -1160,7 +1231,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::ExpressionTool_class_ExpressionTool
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::ExpressionTool_class_ExpressionTool_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::ExpressionTool_class_ExpressionTool_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::ExpressionTool_class_ExpressionTool_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class LinkMergeMethod : unsigned int {
     merge_nested,
     merge_flattened
@@ -1189,7 +1262,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::LinkMergeMethod v) {
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::LinkMergeMethod& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::LinkMergeMethod> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::LinkMergeMethod> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class PickValueMethod : unsigned int {
     first_non_null,
     the_only_non_null,
@@ -1221,7 +1296,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::PickValueMethod v) {
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::PickValueMethod& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::PickValueMethod> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::PickValueMethod> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class ScatterMethod : unsigned int {
     dotproduct,
     nested_crossproduct,
@@ -1253,7 +1330,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::ScatterMethod v) {
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::ScatterMethod& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::ScatterMethod> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::ScatterMethod> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class Workflow_class_Workflow_class : unsigned int {
     Workflow
 };
@@ -1279,7 +1358,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::Workflow_class_Workflow_class v) {
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::Workflow_class_Workflow_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::Workflow_class_Workflow_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::Workflow_class_Workflow_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class SubworkflowFeatureRequirement_class_SubworkflowFeatureRequirement_class : unsigned int {
     SubworkflowFeatureRequirement
 };
@@ -1305,7 +1386,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::SubworkflowFeatureRequirement_class
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::SubworkflowFeatureRequirement_class_SubworkflowFeatureRequirement_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::SubworkflowFeatureRequirement_class_SubworkflowFeatureRequirement_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::SubworkflowFeatureRequirement_class_SubworkflowFeatureRequirement_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class ScatterFeatureRequirement_class_ScatterFeatureRequirement_class : unsigned int {
     ScatterFeatureRequirement
 };
@@ -1331,7 +1414,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::ScatterFeatureRequirement_class_Sca
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::ScatterFeatureRequirement_class_ScatterFeatureRequirement_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::ScatterFeatureRequirement_class_ScatterFeatureRequirement_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::ScatterFeatureRequirement_class_ScatterFeatureRequirement_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class MultipleInputFeatureRequirement_class_MultipleInputFeatureRequirement_class : unsigned int {
     MultipleInputFeatureRequirement
 };
@@ -1357,7 +1442,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::MultipleInputFeatureRequirement_cla
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::MultipleInputFeatureRequirement_class_MultipleInputFeatureRequirement_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::MultipleInputFeatureRequirement_class_MultipleInputFeatureRequirement_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::MultipleInputFeatureRequirement_class_MultipleInputFeatureRequirement_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class StepInputExpressionRequirement_class_StepInputExpressionRequirement_class : unsigned int {
     StepInputExpressionRequirement
 };
@@ -1383,7 +1470,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::StepInputExpressionRequirement_clas
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::StepInputExpressionRequirement_class_StepInputExpressionRequirement_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::StepInputExpressionRequirement_class_StepInputExpressionRequirement_class> : std::true_type {};namespace https___w3id_org_cwl_cwl {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::StepInputExpressionRequirement_class_StepInputExpressionRequirement_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_cwl {
 enum class Operation_class_Operation_class : unsigned int {
     Operation
 };
@@ -1409,7 +1498,9 @@ inline auto toYaml(https___w3id_org_cwl_cwl::Operation_class_Operation_class v) 
 inline void fromYaml(YAML::Node n, https___w3id_org_cwl_cwl::Operation_class_Operation_class& out) {
     to_enum(n.as<std::string>(), out);
 }
-    template <> struct IsConstant<https___w3id_org_cwl_cwl::Operation_class_Operation_class> : std::true_type {};namespace https___w3id_org_cwl_salad {
+template <> struct IsConstant<https___w3id_org_cwl_cwl::Operation_class_Operation_class> : std::true_type {};
+
+namespace https___w3id_org_cwl_salad {
 struct Documented {
     heap_object<std::variant<std::monostate, std::string, std::vector<std::string>>> doc;
     virtual ~Documented() = 0;
@@ -5897,6 +5988,15 @@ auto toYaml(std::vector<T> const& v) -> YAML::Node {
 }
 
 template <typename T>
+auto toYaml(std::map<std::string, T> const& v) -> YAML::Node {
+    auto n = YAML::Node(YAML::NodeType::Map);
+    for (auto const& [key, value] : v) {
+        n[key] = toYaml(value);
+    }
+    return n;
+}
+
+template <typename T>
 auto toYaml(T const& t) -> YAML::Node {
     if constexpr (std::is_enum_v<T>) {
         return toYaml(t);
@@ -5918,6 +6018,15 @@ void fromYaml(YAML::Node const& n, std::vector<T>& v){
     for (auto e : n) {
         v.emplace_back();
         fromYaml(e, v.back());
+    }
+}
+
+template <typename T>
+void fromYaml(YAML::Node const& n, std::map<std::string, T>& v){
+    if (!n.IsMap()) return;
+    for (auto e : n) {
+        auto key = e.first.as<std::string>();
+        fromYaml(e.second, v[key]);
     }
 }
 
