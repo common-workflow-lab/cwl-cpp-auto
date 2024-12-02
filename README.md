@@ -13,3 +13,6 @@ It is a single header and can be copied into your own project for any usage.
 
 The usage can be seen in the [cwl_output_example.cpp](cwl_output_example.cpp) file, which show cases on how to describe your tools.
 Another short example of loading a CWL description file an be seen in [cwl_input_example.cpp](cwl_input_example.cpp).
+
+The generations was done by calling:
+schema_salad --codegen cpp --codegen-spdx-copyright-text 'Copyright 2016-2024 CWL Project Contributors' --codegen-spdx-license-identifier Apache-2.0 -- ../cwl-v1.2/CommandLineTool-standalone.yml > generated-cwl.h
