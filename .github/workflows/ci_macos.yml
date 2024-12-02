@@ -27,8 +27,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: "clang12 (c++20)"
-            compiler: "clang-12"
+          - name: "clang17 (c++20)"
+            compiler: "clang-17"
             build_type: Release
             cpp: 20
 
