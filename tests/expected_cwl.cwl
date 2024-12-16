@@ -15,16 +15,14 @@ inputs:
     inputBinding:
       prefix: --output-file
   speciesSelection:
-    type:
-      - fields:
-          species:
-            type:
-              - symbols:
-                  - homo_sapiens
-                  - mus_musculus
-                type: enum
-              - "null"
-        type: record
+    - fields:
+        species:
+          - symbols:
+              - homo_sapiens
+              - mus_musculus
+            type: enum
+          - "null"
+      type: record
 outputs:
   outputFile:
     type: File

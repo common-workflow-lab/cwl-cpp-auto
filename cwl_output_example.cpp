@@ -9,7 +9,7 @@
  */
 
 // using shortened cwl:: namespace instead of https___w3id_org_cwl_cwl
-namespace cwl = https___w3id_org_cwl_cwl;
+namespace cwl = cpp_gen::https___w3id_org_cwl_cwl;
 
 int main() {
     // declaring information about this tool in general
@@ -105,9 +105,5 @@ int main() {
     }
 
 
-    auto y = toYaml(tool);
-
-    YAML::Emitter out;
-    out << y;
-    std::cout << out.c_str() << "\n";
+    cpp_gen::store_document(tool, std::cout);
 }

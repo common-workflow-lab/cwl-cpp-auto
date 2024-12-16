@@ -36,20 +36,25 @@ clean: FORCE
 ## regen_parser : regenerate the CWL v1.2 parser
 regen_parser: cwl_v1_*.h
 
+define run_test
+	@result="$(shell eval $(1) | md5sum -b)" ; \
+	expected="$(shell eval $(2) | md5sum -b)" ; \
+	if [ "$$result" != "$$expected" ] ; then \
+		echo test failed '$(1)': $$result != $$expected; exit 1; \
+	fi;
+endef
+
 ## tests        : compile and run the tests
-tests: FORCE cwl_output_example cwl_input_example
-	@result_output="$(shell ./cwl_output_example | md5sum -b)" ; \
-	result_input="$(shell ./cwl_input_example expected_cwl.cwl | md5sum -b)" ; \
-	expected="$(shell cat expected_cwl.cwl | md5sum -b)" ; \
-	if [ "$$result_output" = "$$expected" ] ; then \
-		if [ "$$result_input" = "$$expected" ] ; then \
-			echo test passed ; \
-		else \
-			echo test failed cwl_input_example $$result_input != $$expected; exit 1; \
-		fi \
-	else \
-		echo test failed cwl_output_example $$result_output != $$expected; exit 1; \
-	fi
+tests: FORCE cwl_output_example cwl_input_example cwl_input_example_store_config
+	$(call run_test,./cwl_output_example,cat tests/expected_cwl.cwl)
+	$(call run_test,./cwl_input_example tests/expected_cwl.cwl,cat tests/expected_cwl.cwl)
+	$(call run_test,./cwl_input_example_store_config tests/01_types.cwl,cat tests/01_types_expected.cwl)
+	$(call run_test,./cwl_input_example_store_config tests/01_types.cwl no_simplification,cat tests/01_types_expected_no_simplification.cwl)
+	$(call run_test,./cwl_input_example_store_config tests/01_types.cwl no_list_to_map,cat tests/01_types_expected_no_list_to_map.cwl)
+	$(call run_test,./cwl_input_example_store_config tests/01_types.cwl no_simplification no_list_to_map,cat tests/01_types_expected_no_simplification_and_list_to_map.cwl)
+	$(call run_test,./cwl_input_example tests/02_expression.cwl,cat tests/02_expression_expected.cwl)
+
+	@echo test passed
 FORCE:
 
 # Use this to print the value of a Makefile variable
