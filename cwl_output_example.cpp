@@ -8,8 +8,8 @@
  * It should print a valid CWL description to stdout.
  */
 
-// using shortened cwl:: namespace instead of https___w3id_org_cwl_cwl
-namespace cwl = cpp_gen::https___w3id_org_cwl_cwl;
+// using shortened cwl:: namespace instead of w3id_org::cwl::cwl
+namespace cwl = w3id_org::cwl::cwl;
 
 int main() {
     // declaring information about this tool in general
@@ -105,5 +105,5 @@ int main() {
     }
 
 
-    cpp_gen::store_document(tool, std::cout);
+    w3id_org::cwl::store_document(tool, std::cout);
 }

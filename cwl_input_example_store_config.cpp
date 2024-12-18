@@ -9,14 +9,16 @@
  * It loads a CWL description from a file and populates C++ classes.
  */
 
+// using shortened cwl:: namespace instead of w3id_org::cwl
+namespace cwl = w3id_org::cwl;
 
 int main(int argc, char** argv) {
     if (argc < 2) return 1;
 
-    auto tool = cpp_gen::load_document(argv[1]);
+    auto tool = cwl::load_document(argv[1]);
 
     // parse command line
-    auto config = cpp_gen::store_config{};
+    auto config = cwl::store_config{};
     for (int i{2}; i < argc; ++i) {
         auto sv = std::string_view{argv[i]};
         if (sv == "no_simplification") {
@@ -27,6 +29,6 @@ int main(int argc, char** argv) {
             config.generateTags = true;
         }
     }
-    cpp_gen::store_document(tool, std::cout, config);
+    cwl::store_document(tool, std::cout, config);
     return 0;
 }

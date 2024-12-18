@@ -9,11 +9,13 @@
  * It loads a CWL description from a file and populates C++ classes.
  */
 
+// using shortened cwl:: namespace instead of w3id_org::cwl
+namespace cwl = w3id_org::cwl;
 
 int main(int argc, char** argv) {
     if (argc != 2) return 1;
 
-    auto tool = cpp_gen::load_document(argv[1]);
-    cpp_gen::store_document(tool, std::cout);
+    auto tool = cwl::load_document(argv[1]);
+    cwl::store_document(tool, std::cout);
     return 0;
 }
