@@ -31,7 +31,7 @@ cwl_v1_2.h: FORCE
 
 ## clean        : clean up the build
 clean: FORCE
-	rm -f cwl_output_example cwl_input_example output_cwl.cwl
+	rm -f cwl_output_example cwl_input_example cwl_input_example_store_config
 
 ## regen_parser : regenerate the CWL v1.2 parser
 regen_parser: cwl_v1_*.h
