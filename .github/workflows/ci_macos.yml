@@ -1,4 +1,4 @@
-name: macOS 12
+name: macOS 13
 
 on:
   push:
@@ -21,14 +21,14 @@ defaults:
 jobs:
   build:
     name: ${{ matrix.name }}
-    runs-on: macos-12
+    runs-on: macos-13
     timeout-minutes: 180
     strategy:
       fail-fast: false
       matrix:
         include:
-          - name: "clang12 (c++20)"
-            compiler: "clang-12"
+          - name: "clang17 (c++20)"
+            compiler: "clang-17"
             build_type: Release
             cpp: 20
 
